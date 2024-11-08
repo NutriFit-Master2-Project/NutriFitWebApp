@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Calendar, Weight, Ruler, Activity, Target, CircleUser, Zap, Trophy } from "lucide-react";
 
 interface UserInfo {
     email?: string;
@@ -100,9 +101,12 @@ export default function UserInfoForm() {
                 </CardHeader>
 
                 <CardContent>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <Label htmlFor="age">Quel âge avez-vous ?</Label>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <div className="mb-4 flex items-center space-x-4">
+                                <Calendar className="text-gray-500" /> {/* Icône pour l'âge */}
+                                <Label htmlFor="age">Quel âge avez-vous ?</Label>
+                            </div>
                             <Input
                                 type="number"
                                 id="age"
@@ -114,8 +118,11 @@ export default function UserInfoForm() {
                             />
                         </div>
 
-                        <div className="mb-4">
-                            <Label htmlFor="weight">Combien pesez-vous ? (kg)</Label>
+                        <div>
+                            <div className="mb-4 flex items-center space-x-2">
+                                <Weight className="text-gray-500" /> {/* Icône pour le poids */}
+                                <Label htmlFor="weight">Combien pesez-vous ? (kg)</Label>
+                            </div>
                             <Input
                                 type="number"
                                 id="weight"
@@ -127,8 +134,11 @@ export default function UserInfoForm() {
                             />
                         </div>
 
-                        <div className="mb-4">
-                            <Label htmlFor="size">Combien mesurez-vous ? (cm)</Label>
+                        <div>
+                            <div className="mb-4 flex items-center space-x-2">
+                                <Ruler className="text-gray-500" /> {/* Icône pour la taille */}
+                                <Label htmlFor="size">Combien mesurez-vous ? (cm)</Label>
+                            </div>
                             <Input
                                 type="number"
                                 id="size"
@@ -140,8 +150,12 @@ export default function UserInfoForm() {
                             />
                         </div>
 
-                        <div className="mb-4">
-                            <Label htmlFor="genre">À quel genre appartenez-vous ?</Label>
+                        <div>
+                            <div className="mb-4 flex items-center space-x-2">
+                                <CircleUser className="text-gray-500" />
+                                {/* Icône pour le genre */}
+                                <Label htmlFor="genre">À quel genre appartenez-vous ?</Label>
+                            </div>
                             <Select onValueChange={handleGenderUpdate}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={userInfo.genre ? "Femme" : "Homme"} />
@@ -153,8 +167,11 @@ export default function UserInfoForm() {
                             </Select>
                         </div>
 
-                        <div className="mb-4">
-                            <Label htmlFor="activites">Évaluez votre activité journalière</Label>
+                        <div>
+                            <div className="mb-4 flex items-center space-x-2">
+                                <Zap className="text-gray-500" /> {/* Icône pour l'activité */}
+                                <Label htmlFor="activites">Évaluez votre activité journalière</Label>
+                            </div>
                             <Select onValueChange={handleActivitesChange}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue
@@ -171,8 +188,11 @@ export default function UserInfoForm() {
                             </Select>
                         </div>
 
-                        <div className="mb-4">
-                            <Label htmlFor="objective">Quel est votre objectif avec NutriFit ?</Label>
+                        <div>
+                            <div className="mb-4 flex items-center space-x-2">
+                                <Trophy className="text-gray-500" /> {/* Icône pour l'objectif */}
+                                <Label htmlFor="objective">Quel est votre objectif avec NutriFit ?</Label>
+                            </div>
                             <Select onValueChange={handleObjectiveChange}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue

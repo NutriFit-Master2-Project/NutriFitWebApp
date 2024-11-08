@@ -1,0 +1,38 @@
+$bg_color: #f7f7f7;
+$font_color: #1a1a1b;
+$back_bg_color: #181817;
+$white_font_color: #eeebeb;
+// $bg_color: #1B1C1E;
+// $font_color: #dfdddd;
+$primary_color: #0d88ec;
+$primary_color2: #f9dcc4;
+// $primary_color: #81B1FA;
+$secondary_color: #edaef9;
+$gradient: linear-gradient(
+  231deg,
+  rgba(129, 177, 250, 1) 0%,
+  rgba(237, 174, 249, 1) 100%
+);
+$light-pink: #e5ddf2;
+$light-blue: #e6f2f7;
+
+// $ollow_yellow: #ffee32;
+// $ollow_red: #ffee32;
+
+$primary_blue: #90f1ef;
+$primary_green: #7ae582;
+$primary_yellow: #ffe45e;
+$primary_red: #ff6392;
+$ollow_blue: #6fffe9;
+// $violet: #9fa0ff;
+
+$mobile_breakpoint: 700px;
+
+$ease_out: cubic-bezier(0.165, 0.84, 0.44, 1);
+@mixin transition() {
+  transition: 700ms $ease_out !important;
+
+  &:hover {
+    transition: 400ms $ease_out !important;
+  }
+}

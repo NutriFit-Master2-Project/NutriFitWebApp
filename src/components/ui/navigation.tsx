@@ -11,6 +11,8 @@ import {
     CircleUser,
     PanelLeft,
     Dumbbell,
+    ScanBarcode,
+    Utensils,
 } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
@@ -40,7 +42,7 @@ export function Navigation() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="/"
+                                href="/dashboard"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Home className="h-5 w-5" />
@@ -48,6 +50,45 @@ export function Navigation() {
                             </Link>
                         </TooltipTrigger>
                         <TooltipContent side="right">Home</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/nutrition/food-scanner"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <ScanBarcode className="h-5 w-5" />
+                                <span className="sr-only">Scanner un aliment</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Scanner un aliment</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/nutrition/food-scanner"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <Utensils className="h-5 w-5" />
+                                <span className="sr-only">Nutrition</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Nutrition</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="#"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <LineChart className="h-5 w-5" />
+                                <span className="sr-only">Analytics</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Analytics</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
@@ -74,18 +115,7 @@ export function Navigation() {
                         </TooltipTrigger>
                         <TooltipContent side="right">Customers</TooltipContent>
                     </Tooltip>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Link
-                                href="#"
-                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                            >
-                                <LineChart className="h-5 w-5" />
-                                <span className="sr-only">Analytics</span>
-                            </Link>
-                        </TooltipTrigger>
-                        <TooltipContent side="right">Analytics</TooltipContent>
-                    </Tooltip>
+
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
