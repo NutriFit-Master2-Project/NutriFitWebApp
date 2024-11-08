@@ -13,6 +13,7 @@ import {
     Dumbbell,
     ScanBarcode,
     Utensils,
+    Refrigerator,
 } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
@@ -25,7 +26,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function Navigation() {
     return (
@@ -68,7 +68,20 @@ export function Navigation() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="/nutrition/food-scanner"
+                                href="/nutrition/product-list"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <Refrigerator className="h-5 w-5" />
+                                <span className="sr-only">Dans mon frigot</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Dans mon frigot</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/nutrition/product-list"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Utensils className="h-5 w-5" />
