@@ -14,8 +14,10 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Trash2 } from "lucide-react";
 
 interface Product {
+    _id: string;
     product_name: string;
     nutriments: {
         "energy-kcal": number;
@@ -38,6 +40,7 @@ const ProductListPage = () => {
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [confirmDeleteProduct, setConfirmDeleteProduct] = useState<Product | null>(null);
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
 
@@ -101,6 +104,32 @@ const ProductListPage = () => {
         }
     };
 
+    const deleteProduct = async (product: Product) => {
+        try {
+            const response = await fetch(
+                `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product/${user.userId}/${product._id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": token ?? "",
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Erreur lors de la suppression du produit");
+            }
+
+            setProducts((prevProducts) => prevProducts.filter((p) => p._id !== product._id));
+        } catch (err) {
+            setError("Erreur lors de la suppression du produit.");
+            console.error(err);
+        } finally {
+            setConfirmDeleteProduct(null);
+        }
+    };
+
     return (
         <div className="container mx-auto py-8">
             <h1 className="text-3xl font-bold mb-6">Liste des Produits</h1>
@@ -136,6 +165,19 @@ const ProductListPage = () => {
                         onClick={() => setSelectedProduct(product)}
                     >
                         <div className="absolute top-4 right-4">
+                            <Button
+                                variant="ghost"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setConfirmDeleteProduct(product);
+                                }}
+                                className="p-1 text-red-500"
+                            >
+                                <Trash2 className="w-6 h-6" />
+                            </Button>
+                        </div>
+
+                        <div className="absolute top-4 left-4">
                             <Badge className={`text-xl px-4 py-2 ${getNutriScoreVariant(product.nutriscore_grade)}`}>
                                 {product.nutriscore_grade.toUpperCase()}
                             </Badge>
@@ -205,6 +247,27 @@ const ProductListPage = () => {
                                     Fermer
                                 </Button>
                             </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+            {confirmDeleteProduct && (
+                <Dialog open={!!confirmDeleteProduct} onOpenChange={() => setConfirmDeleteProduct(null)}>
+                    <DialogContent className="p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg space-y-4">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-semibold">Confirmer la suppression</DialogTitle>
+                            <DialogDescription>
+                                Êtes-vous sûr de vouloir supprimer le produit "{confirmDeleteProduct.product_name}" ?
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="flex justify-end space-x-2">
+                            <Button variant="secondary" onClick={() => setConfirmDeleteProduct(null)}>
+                                Annuler
+                            </Button>
+                            <Button variant="destructive" onClick={() => deleteProduct(confirmDeleteProduct)}>
+                                Supprimer
+                            </Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
