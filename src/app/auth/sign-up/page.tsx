@@ -85,14 +85,27 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
-            <div className="hidden bg-muted lg:block">
-                <Image
-                    src="/nutriFitIcon.jpg"
-                    alt="Image"
-                    width="1920"
-                    height="1080"
-                    className="h-full w-full object-cover"
-                />
+
+            <div className="hidden lg:flex items-center justify-center bg-[#222222] h-full relative">
+                <div className="w-full h-full flex justify-center">
+                    <Image
+                        src="/mockups_list.png"
+                        alt="NutriFit Icon"
+                        width={768}
+                        height={432}
+                        className="object-cover w-full h-full"
+                    />
+                </div>
+
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                    <Image
+                        src="/logo_transparent.png"
+                        alt="NutriFit Icon"
+                        width={250}
+                        height={250}
+                        className="object-contain"
+                    />
+                </div>
             </div>
         </div>
     );

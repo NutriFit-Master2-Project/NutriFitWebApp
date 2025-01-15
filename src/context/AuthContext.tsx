@@ -114,7 +114,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             if (userInfo) {
                 setUser({ ...userInfo, userId });
 
-                localStorage.setItem("user", JSON.stringify(userInfo));
+                localStorage.setItem("user", JSON.stringify({ ...userInfo, userId }));
                 localStorage.setItem("token", data.token);
 
                 // If it's user first connexion then go to page to set user details data
