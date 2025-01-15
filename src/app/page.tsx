@@ -28,11 +28,11 @@ export default function Home() {
 
             <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
                 <Image
-                    src="/nutriFitIcon.jpg"
+                    src="/phone_mockups.png"
                     alt="Hero Image"
-                    width={500}
-                    height={500}
-                    className="object-contain max-w-full h-auto"
+                    width={600}
+                    height={600}
+                    className="object-contain w-full h-auto"
                 />
             </div>
         </section>

@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Trash2 } from "lucide-react";
+import { CirclePlus, FastForward, Trash2 } from "lucide-react";
+import { getFormattedDate } from "@/utils/getFormattedDate";
 
 interface Product {
     _id: string;
@@ -43,6 +44,7 @@ const ProductListPage = () => {
     const [confirmDeleteProduct, setConfirmDeleteProduct] = useState<Product | null>(null);
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [adding, setAdding] = useState(false);
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -130,6 +132,39 @@ const ProductListPage = () => {
         }
     };
 
+    // const apiBaseUrl: string = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl: string = "http://localhost:8000/api";
+
+    const handleAddToTodayMeal = async (product: any) => {
+        try {
+            setAdding(true);
+            const response = await fetch(
+                `${apiBaseUrl}/daily_entries/${user?.userId}/entries/${getFormattedDate()}/meals`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
+                    body: JSON.stringify({
+                        name: product.product_name,
+                        calories: product.nutriments["energy-kcal"],
+                        quantity: product.quantity,
+                        image_url: product.image_url,
+                    }),
+                }
+            );
+            if (response.ok) {
+                // Mise à jour ou notification de succès
+                console.log("Produit ajouté avec succès !");
+            } else {
+                // Gestion des erreurs
+                console.error("Erreur lors de l'ajout du produit.");
+            }
+        } catch (error) {
+            console.error("Erreur réseau :", error);
+        } finally {
+            setAdding(false);
+        }
+    };
+
     return (
         <div className="container mx-auto py-8">
             <h1 className="text-3xl font-bold mb-6">Liste des Produits</h1>
@@ -202,6 +237,24 @@ const ProductListPage = () => {
             {selectedProduct && (
                 <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
                     <DialogContent className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg space-y-4">
+                        <div className="absolute top-1 left-1">
+                            <Button
+                                onClick={() => handleAddToTodayMeal(selectedProduct)}
+                                disabled={adding}
+                                className="flex gap-2"
+                            >
+                                {adding ? (
+                                    <>
+                                        Ajout en cours <FastForward className="animate-spin" />
+                                    </>
+                                ) : (
+                                    <>
+                                        Ajouter à mes repas d'aujourd'hui <CirclePlus />
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+
                         <DialogHeader className="flex justify-between items-center">
                             <DialogTitle className="text-2xl font-semibold text-gray-800">
                                 {selectedProduct.product_name}
@@ -214,6 +267,14 @@ const ProductListPage = () => {
                                 {selectedProduct.nutriscore_grade.toUpperCase()}
                             </Badge>
                         </DialogHeader>
+
+                        <div className="flex justify-center">
+                            <img
+                                src={selectedProduct.image_url}
+                                alt={selectedProduct.product_name}
+                                className="w-48 h-48 object-contain rounded"
+                            />
+                        </div>
 
                         <DialogDescription className="space-y-4 text-lg text-gray-700">
                             <div>

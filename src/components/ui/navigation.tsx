@@ -14,6 +14,7 @@ import {
     ScanBarcode,
     Utensils,
     Refrigerator,
+    Soup,
 } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
@@ -81,14 +82,14 @@ export function Navigation() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="/nutrition/product-list"
+                                href="/nutrition/daily-entries"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Utensils className="h-5 w-5" />
-                                <span className="sr-only">Nutrition</span>
+                                <Soup className="h-5 w-5" />
+                                <span className="sr-only">Repas</span>
                             </Link>
                         </TooltipTrigger>
-                        <TooltipContent side="right">Nutrition</TooltipContent>
+                        <TooltipContent side="right">Repas</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
