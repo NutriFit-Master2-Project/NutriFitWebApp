@@ -6,6 +6,7 @@ import { ChartContainer } from "@/components/ui/chart";
 import { Bar, BarChart, LabelList, PolarAngleAxis, RadialBar, RadialBarChart, XAxis, YAxis } from "recharts";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 type DailyEntry = {
     steps: number;
@@ -31,7 +32,7 @@ export default function TodayStat({ userId, date, token, dailyCalories }: DailyE
     useEffect(() => {
         const fetchDailyEntry = async () => {
             try {
-                const res = await fetch(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
+                const res = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

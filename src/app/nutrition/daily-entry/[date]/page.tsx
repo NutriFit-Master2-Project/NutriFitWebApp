@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import { Trash2 } from "lucide-react";
+import { updateDailyCalories } from "@/utils/updateDailyCalories";
+import { getFormattedDate } from "@/utils/getFormattedDate";
+import { useToast } from "@/hooks/use-toast";
 
 interface DailyEntry {
     date: string;
@@ -26,11 +31,10 @@ interface Meal {
 export default function MealsPage({ params }: any) {
     const { date } = params; // Récupérer la date depuis les paramètres de l'URL
 
-    // const {date}: string = new Date().toISOString().split("T")[0];
-    // const apiBaseUrl: string = "https://nutrifitbackend-2v4o.onrender.com/api";
-    const apiBaseUrl: string = "http://localhost:8000/api";
+    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
+    const { toast } = useToast();
 
     const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
     const [meals, setMeals] = useState<Meal[]>([]);
@@ -48,16 +52,18 @@ export default function MealsPage({ params }: any) {
 
     useEffect(() => {
         if (user && token) {
-            console.log("🚀 ~ useEffect ~ user:", user);
             const fetchDailyEntry = async () => {
                 try {
-                    const entryRes = await fetch(`${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}`, {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "auth-token": token ?? "",
-                        },
-                    });
+                    const entryRes = await fetchWithInterceptor(
+                        `${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "auth-token": token ?? "",
+                            },
+                        }
+                    );
                     if (!entryRes.ok) {
                         throw new Error("Impossible de récupérer l'entrée quotidienne.");
                     }
@@ -65,19 +71,6 @@ export default function MealsPage({ params }: any) {
                     console.log("🚀 ~ fetchDailyEntry ~ entryData:", entryData);
                     setDailyEntry(entryData);
                     setMeals(entryData.meals);
-
-                    // const mealsRes = await fetch(`${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}/meals`, {
-                    //     method: "GET",
-                    //     headers: {
-                    //         "Content-Type": "application/json",
-                    //         "auth-token": token ?? "",
-                    //     },
-                    // });
-                    // if (mealsRes.ok) {
-                    //     const mealsData: Meal[] = await mealsRes.json();
-                    //     console.log("🚀 ~ fetchDailyEntry ~ mealsData:", mealsData);
-                    //     setMeals(mealsData);
-                    // }
                 } catch (err: any) {
                     setError(err.message);
                 }
@@ -89,15 +82,19 @@ export default function MealsPage({ params }: any) {
 
     const handleDelete = async (mealId: string) => {
         try {
-            const res = await fetch(`${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}/meals/${mealId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": token ?? "",
-                },
-            });
+            const res = await fetchWithInterceptor(
+                `${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}/meals/${mealId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": token ?? "",
+                    },
+                }
+            );
             if (res.ok) {
                 setMeals((prev) => prev.filter((meal) => meal.id !== mealId));
+                handleUpdateDailyCalories();
             } else {
                 throw new Error("Erreur lors de la suppression du repas.");
             }
@@ -105,6 +102,27 @@ export default function MealsPage({ params }: any) {
             alert(err.message);
         }
     };
+
+    async function handleUpdateDailyCalories() {
+        const updatedCalories = await updateDailyCalories(user.userId, token ?? "", getFormattedDate(), user.calories);
+        if (updatedCalories) {
+            setDailyEntry((prev) => {
+                if (prev) {
+                    return {
+                        ...prev,
+                        calories: updatedCalories,
+                    };
+                }
+                return null;
+            });
+        }
+
+        toast({
+            title: "Suppression du produit",
+            description: "Produit supprimé avec succès.",
+            variant: "default",
+        });
+    }
 
     if (error) {
         return (
@@ -147,31 +165,37 @@ export default function MealsPage({ params }: any) {
             </Card>
 
             <h2 className="text-xl font-semibold mb-4">Repas de la journée</h2>
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {meals.length > 0 ? (
                     meals.map((meal) => (
-                        <Card key={meal.id} className="shadow-md">
-                            <CardHeader className="flex justify-between items-center">
-                                <div>
-                                    <h3 className="text-lg font-semibold">{meal.name}</h3>
-                                    <p className="text-sm text-gray-500">
-                                        {meal.calories} kcal - Quantité: {meal.quantity}
-                                    </p>
-                                </div>
+                        <Card key={meal.id} className="shadow-md relative">
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                className="absolute top-2 right-2"
+                                onClick={() => handleDelete(meal.id)}
+                            >
+                                <Trash2 className="w-6 h-6" />
+                            </Button>
+                            <CardHeader className="flex flex-col items-center">
                                 {meal.image_url && (
-                                    <img src={meal.image_url} alt={meal.name} className="w-40 h-40 rounded-md" />
+                                    <img
+                                        src={meal.image_url}
+                                        alt={meal.name}
+                                        className="w-20 h-20 object-cover rounded-md mb-2"
+                                    />
                                 )}
+                                <h3 className="text-base font-semibold text-center">{meal.name}</h3>
+                                <p className="text-xs text-gray-500 text-center">
+                                    {meal.calories} kcal - Quantité: {meal.quantity}
+                                </p>
                             </CardHeader>
-                            <Separator />
-                            <CardFooter>
-                                <Button variant="destructive" size="sm" onClick={() => handleDelete(meal.id)}>
-                                    Supprimer
-                                </Button>
-                            </CardFooter>
                         </Card>
                     ))
                 ) : (
-                    <p className="text-gray-500">Aucun repas enregistré pour cette journée.</p>
+                    <p className="text-gray-500 col-span-full text-center">
+                        Aucun repas enregistré pour cette journée.
+                    </p>
                 )}
             </div>
         </div>

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChartContainer } from "@/components/ui/chart";
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 import Link from "next/link";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 type DailyEntry = {
     steps: number;
@@ -30,7 +31,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
     useEffect(() => {
         const fetchDailyEntry = async () => {
             try {
-                const res = await fetch(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
+                const res = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -77,7 +78,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                         <div className="grid flex-1 auto-rows-min gap-0.5">
                             <div className="text-sm text-muted-foreground">Calories</div>
                             <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
-                                {Number(dailyEntry.calories).toFixed(0)}/2000
+                                {Number(dailyEntry.calories).toFixed(0)}/{Number(dailyCalories)?.toFixed(0) ?? 2000}
                                 <span className="text-sm font-normal text-muted-foreground">kcal</span>
                             </div>
                         </div>

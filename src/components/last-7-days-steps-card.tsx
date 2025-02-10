@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardDescription, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, ReferenceLine, Label } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 type DailyEntry = {
     calories: number;
@@ -27,7 +28,7 @@ type Meal = {
     };
 };
 
-export default function Last7DaysStepsCard() {
+export default function StepsCard() {
     const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export default function Last7DaysStepsCard() {
         if (user && token) {
             const fetchDailyEntries = async () => {
                 try {
-                    const res = await fetch(`${apiBaseUrl}/daily_entries/${user?.userId}/entries`, {
+                    const res = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${user?.userId}/entries`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -81,9 +82,29 @@ export default function Last7DaysStepsCard() {
         return <div className="text-red-500">Erreur : {error}</div>;
     }
 
-    // Filtrer les données pour les 7 derniers jours
-    const recentEntries = dailyEntries.slice(0, 7).reverse(); // Limite à 7 jours et inverse l'ordre pour afficher le plus récent en dernier
-    const totalSteps = recentEntries.reduce((sum, entry) => sum + entry.steps, 0);
+    // Générer les 7 derniers jours consécutifs
+    const getLast7Days = () => {
+        const days = [];
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            days.push(date.toISOString().split("T")[0]); // Format YYYY-MM-DD
+        }
+        return days;
+    };
+
+    const last7Days = getLast7Days();
+
+    // Mapper les données existantes sur les 7 derniers jours
+    const stepsData = last7Days.map((date) => {
+        const entry = dailyEntries.find((e) => e.date === date);
+        return {
+            date,
+            steps: entry ? entry.steps : 0, // Utiliser 0 si le jour est manquant
+        };
+    });
+
+    const totalSteps = stepsData.reduce((sum, entry) => sum + entry.steps, 0);
     const stepsGoal = 12000; // Exemple de valeur cible
 
     return (
@@ -91,7 +112,7 @@ export default function Last7DaysStepsCard() {
             <CardHeader className="space-y-0 pb-2">
                 <CardDescription>Aujourd'hui</CardDescription>
                 <CardTitle className="text-4xl tabular-nums">
-                    {recentEntries[0]?.steps ?? 0}{" "}
+                    {stepsData[stepsData.length - 1]?.steps ?? 0}{" "}
                     <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">steps</span>
                 </CardTitle>
             </CardHeader>
@@ -110,10 +131,7 @@ export default function Last7DaysStepsCard() {
                             left: -4,
                             right: -4,
                         }}
-                        data={recentEntries.map((entry) => ({
-                            date: entry.date,
-                            steps: entry.steps,
-                        }))}
+                        data={stepsData}
                     >
                         <Bar dataKey="steps" fill="var(--color-steps)" radius={5} fillOpacity={0.6} />
                         <XAxis
@@ -173,7 +191,9 @@ export default function Last7DaysStepsCard() {
                 </CardDescription>
                 <CardDescription>
                     Vous devez encore{" "}
-                    <span className="font-medium text-foreground">{stepsGoal - (recentEntries[0]?.steps ?? 0)}</span>{" "}
+                    <span className="font-medium text-foreground">
+                        {stepsGoal - (stepsData[stepsData.length - 1]?.steps ?? 0)}
+                    </span>{" "}
                     pas pour atteindre votre objectif d'aujourd'hui.
                 </CardDescription>
             </CardFooter>

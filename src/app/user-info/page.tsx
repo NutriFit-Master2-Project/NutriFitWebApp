@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Calendar, Weight, Ruler, Activity, Target, CircleUser, Zap, Trophy } from "lucide-react";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 interface UserInfo {
     email?: string;
@@ -72,7 +73,7 @@ export default function UserInfoForm() {
         e.preventDefault();
 
         try {
-            const response = await fetch("https://nutrifitbackend-2v4o.onrender.com/api/user-info", {
+            const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/user-info", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -87,7 +88,7 @@ export default function UserInfoForm() {
 
             await response.json();
 
-            router.push("/dashboard");
+            router.push("/nutrition/daily-entries");
         } catch (error) {
             console.error("Erreur lors de l'envoi des données:", error);
         }

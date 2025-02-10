@@ -9,6 +9,7 @@ import BarcodeScannerWithPopup from "@/components/barcode-scan";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Ghost } from "lucide-react";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 const FoodScanner: React.FC = () => {
     const [barcode, setBarcode] = useState<string>("");
@@ -23,7 +24,7 @@ const FoodScanner: React.FC = () => {
     const fetchProductData = async (code: string) => {
         setLoading(true);
         try {
-            const response = await fetch(
+            const response = await fetchWithInterceptor(
                 `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/get-nutritional-info/${code}`,
                 {
                     method: "GET",
@@ -67,7 +68,7 @@ const FoodScanner: React.FC = () => {
         setAdding(true); // Début de l'ajout
 
         try {
-            const response: Response = await fetch(
+            const response: Response = await fetchWithInterceptor(
                 `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/save-product/${user?.userId}`,
                 {
                     method: "POST",

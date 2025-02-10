@@ -1,3 +1,5 @@
+import { fetchWithInterceptor } from "./fetchInterceptor";
+
 type Meal = {
     id: string;
     name: string;
@@ -29,7 +31,7 @@ export async function updateDailyCalories(
 
     try {
         // Retrieve the daily entry
-        const getResponse = await fetch(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
+        const getResponse = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -49,14 +51,13 @@ export async function updateDailyCalories(
         const updatedCalories = caloriesFromMeals;
 
         // Update the daily entry calories
-        const putResponse = await fetch(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
+        const putResponse = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "auth-token": token,
             },
             body: JSON.stringify({
-                ...dailyEntry,
                 calories: Number(updatedCalories.toFixed(0)),
             }),
         });
