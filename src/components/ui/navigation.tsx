@@ -120,14 +120,14 @@ export function Navigation() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/training/list"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Users2 className="h-5 w-5" />
-                                <span className="sr-only">Customers</span>
+                                <Dumbbell className="h-5 w-5" />
+                                <span className="sr-only">Training</span>
                             </Link>
                         </TooltipTrigger>
-                        <TooltipContent side="right">Customers</TooltipContent>
+                        <TooltipContent side="right">Training</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
