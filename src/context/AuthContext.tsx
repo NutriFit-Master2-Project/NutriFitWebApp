@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { jwtDecode } from "jwt-decode";
 import { FastForward } from "lucide-react";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 interface User {
     userId: string;
@@ -46,7 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const signUp = async (name: string, email: string, password: string) => {
         try {
-            const response = await fetch("https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-up", {
+            const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-up", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password }),
@@ -71,10 +72,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const fetchUserInfo = async (userId: string, token: string) => {
         try {
-            const response = await fetch(`https://nutrifitbackend-2v4o.onrender.com/api/user-info/${userId}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json", "auth-token": token },
-            });
+            const response = await fetchWithInterceptor(
+                `https://nutrifitbackend-2v4o.onrender.com/api/user-info/${userId}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", "auth-token": token },
+                }
+            );
 
             if (!response.ok) {
                 throw new Error(`Erreur lors de la récupération des informations utilisateur : ${response.status}`);
@@ -90,7 +94,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const signIn = async (email: string, password: string) => {
         try {
-            const response = await fetch("https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-in", {
+            const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-in", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -118,7 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 localStorage.setItem("token", data.token);
 
                 // If it's user first connexion then go to page to set user details data
-                userInfo.activites ? router.push("/dashboard") : router.push("/user-info");
+                userInfo.activites ? router.push("/nutrition/daily-entries") : router.push("/user-info");
             } else {
                 throw new Error("Impossible de récupérer les informations utilisateur");
             }

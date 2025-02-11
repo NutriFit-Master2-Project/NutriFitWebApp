@@ -16,6 +16,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CirclePlus, FastForward, Trash2 } from "lucide-react";
 import { getFormattedDate } from "@/utils/getFormattedDate";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import { updateDailyCalories } from "@/utils/updateDailyCalories";
+import { useToast } from "@/hooks/use-toast";
 
 interface Product {
     _id: string;
@@ -45,6 +48,9 @@ const ProductListPage = () => {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
     const [adding, setAdding] = useState(false);
+    const [quantity, setQuantity] = useState("");
+    const [confirmAddToTodayMeal, setConfirmAddToTodayMeal] = useState<Product | null>(null);
+    const { toast } = useToast();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -62,7 +68,7 @@ const ProductListPage = () => {
                 setLoading(true);
                 setError(null);
                 try {
-                    const response = await fetch(
+                    const response = await fetchWithInterceptor(
                         `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product-list/${user?.userId}`,
                         {
                             method: "GET",
@@ -108,7 +114,7 @@ const ProductListPage = () => {
 
     const deleteProduct = async (product: Product) => {
         try {
-            const response = await fetch(
+            const response = await fetchWithInterceptor(
                 `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product/${user.userId}/${product._id}`,
                 {
                     method: "DELETE",
@@ -124,46 +130,77 @@ const ProductListPage = () => {
             }
 
             setProducts((prevProducts) => prevProducts.filter((p) => p._id !== product._id));
+
+            toast({
+                title: "Suppression du produit",
+                description: "Produit supprimé avec succès.",
+                variant: "default",
+            });
         } catch (err) {
             setError("Erreur lors de la suppression du produit.");
             console.error(err);
+            toast({
+                title: "Erreur",
+                description: "Erreur lors de la suppression du produit.",
+                variant: "destructive",
+            });
         } finally {
             setConfirmDeleteProduct(null);
         }
     };
 
-    // const apiBaseUrl: string = "https://nutrifitbackend-2v4o.onrender.com/api";
-    const apiBaseUrl: string = "http://localhost:8000/api";
+    const apiBaseUrl: string = "https://nutrifitbackend-2v4o.onrender.com/api";
+    // const apiBaseUrl: string = "http://localhost:8000/api";
 
-    const handleAddToTodayMeal = async (product: any) => {
+    const handleAddToTodayMeal = async (product: any, quantity: string) => {
         try {
             setAdding(true);
-            const response = await fetch(
+            const response = await fetchWithInterceptor(
                 `${apiBaseUrl}/daily_entries/${user?.userId}/entries/${getFormattedDate()}/meals`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
                     body: JSON.stringify({
                         name: product.product_name,
-                        calories: product.nutriments["energy-kcal"],
-                        quantity: product.quantity,
+                        calories: Number(
+                            ((Number(product.nutriments["energy-kcal"]) / 100) * Number(quantity)).toFixed(0)
+                        ),
+                        quantity: quantity,
                         image_url: product.image_url,
                     }),
                 }
             );
             if (response.ok) {
-                // Mise à jour ou notification de succès
                 console.log("Produit ajouté avec succès !");
+                toast({
+                    title: "Produit ajouté",
+                    description: "Produit ajouté avec succès.",
+                    variant: "default",
+                });
+                handleUpdateDailyCalories();
             } else {
-                // Gestion des erreurs
                 console.error("Erreur lors de l'ajout du produit.");
+                toast({
+                    title: "Erreur",
+                    description: "Erreur lors de l'ajout du produit.",
+                    variant: "destructive",
+                });
             }
         } catch (error) {
             console.error("Erreur réseau :", error);
+            toast({
+                title: "Erreur réseau",
+                description: "Une erreur est survenu. Veuillez réessayer.",
+                variant: "destructive",
+            });
         } finally {
             setAdding(false);
         }
     };
+
+    async function handleUpdateDailyCalories() {
+        await updateDailyCalories(user.userId, token ?? "", getFormattedDate(), user.calories);
+    }
 
     return (
         <div className="container mx-auto py-8">
@@ -239,7 +276,7 @@ const ProductListPage = () => {
                     <DialogContent className="p-6 max-w-3xl mx-auto bg-white shadow-lg rounded-lg space-y-4">
                         <div className="absolute top-1 left-1">
                             <Button
-                                onClick={() => handleAddToTodayMeal(selectedProduct)}
+                                onClick={() => setConfirmAddToTodayMeal(selectedProduct)}
                                 disabled={adding}
                                 className="flex gap-2"
                             >
@@ -328,6 +365,46 @@ const ProductListPage = () => {
                             </Button>
                             <Button variant="destructive" onClick={() => deleteProduct(confirmDeleteProduct)}>
                                 Supprimer
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+            {confirmAddToTodayMeal && (
+                <Dialog open={!!confirmAddToTodayMeal} onOpenChange={() => setConfirmAddToTodayMeal(null)}>
+                    <DialogContent className="p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg space-y-4">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-semibold">Ajouter le produit</DialogTitle>
+                            <DialogDescription>
+                                Saisissez la quantité pour ajouter "{confirmAddToTodayMeal.product_name}" à votre repas
+                                d'aujourd'hui.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+                                Quantité (en grammes)
+                            </label>
+                            <input
+                                id="quantity"
+                                type="number"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={quantity}
+                                onChange={(e) => setQuantity(e.target.value)}
+                            />
+                        </div>
+                        <DialogFooter className="flex justify-end space-x-2">
+                            <Button variant="secondary" onClick={() => setConfirmAddToTodayMeal(null)}>
+                                Annuler
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    handleAddToTodayMeal(confirmAddToTodayMeal, quantity);
+                                    setConfirmAddToTodayMeal(null);
+                                }}
+                                disabled={adding || !quantity}
+                            >
+                                {adding ? "Ajout en cours..." : "Ajouter"}
                             </Button>
                         </DialogFooter>
                     </DialogContent>

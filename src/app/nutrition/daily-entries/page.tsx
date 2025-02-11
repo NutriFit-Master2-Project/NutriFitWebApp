@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartContainer } from "@/components/ui/chart";
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
+import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import DailyEntryCard from "@/components/dailyEntry";
+import { getFormattedDate } from "@/utils/getFormattedDate";
 
 type Meal = {
     id: string;
@@ -36,7 +39,7 @@ export default function DailyEntriesPage() {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
 
-    const apiBaseUrl = "http://localhost:8000/api";
+    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -52,7 +55,7 @@ export default function DailyEntriesPage() {
         if (user && token) {
             const fetchDailyEntries = async () => {
                 try {
-                    const res = await fetch(`${apiBaseUrl}/daily_entries/${user?.userId}/entries`, {
+                    const res = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${user?.userId}/entries`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -93,21 +96,30 @@ export default function DailyEntriesPage() {
 
     return (
         <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
-            <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Daily Entries</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {user.userId && token ? (
+                <DailyEntryCard
+                    userId={user.userId}
+                    date={getFormattedDate()}
+                    token={token}
+                    dailyCalories={user.calories}
+                />
+            ) : (
+                <p className="text-gray-500 text-center">Veuillez vous connecter pour accéder aux données.</p>
+            )}
+
+            <h1 className="text-3xl font-bold text-gray-800 mb-8 pt-20">Liste des Daily Entries</h1>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                 {dailyEntries.map((entry, index) => (
                     <Link
                         key={index}
                         href={`/nutrition/daily-entry/${entry.date}`}
                         className="hover:scale-105 transition-transform"
                     >
-                        <Card className="shadow-lg rounded-lg border border-gray-200 overflow-hidden cursor-pointer bg-white p-4">
+                        <Card className="shadow-md rounded-md border border-gray-200 bg-white p-4 cursor-pointer">
                             <CardContent className="flex flex-col items-center">
-                                <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                                    {new Date(entry.date).toLocaleDateString()}
-                                </h2>
-
-                                <div className="w-full max-w-[150px] ">
+                                {/* Graph */}
+                                <div className="w-full max-w-[120px] mb-3">
                                     <ChartContainer
                                         config={{
                                             calories: {
@@ -134,17 +146,17 @@ export default function DailyEntriesPage() {
                                             data={[
                                                 {
                                                     activity: "meals",
-                                                    value: (entry.meals.length / 5) * 100, // Ex : objectif 5 repas
+                                                    value: (entry.meals.length / 5) * 100,
                                                     fill: "var(--color-meals)",
                                                 },
                                                 {
                                                     activity: "steps",
-                                                    value: (entry.steps / 10000) * 100, // Ex : objectif 10,000 steps
+                                                    value: (entry.steps / 3000) * 100,
                                                     fill: "var(--color-steps)",
                                                 },
                                                 {
                                                     activity: "calories",
-                                                    value: (entry.calories / 2000) * 100, // Ex : objectif 2000 calories
+                                                    value: (entry.calories / (user?.calories ?? 2000)) * 100,
                                                     fill: "var(--color-calories)",
                                                 },
                                             ]}
@@ -164,21 +176,22 @@ export default function DailyEntriesPage() {
                                     </ChartContainer>
                                 </div>
 
-                                <div className="mt-4 text-center space-y-2">
-                                    <div className="flex items-center justify-center space-x-2">
+                                {/* Metrics */}
+                                <div className="mt-3 text-center space-y-1">
+                                    <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-1))] rounded"></div>
                                         <p className="text-sm text-gray-600">
                                             <span className="font-medium text-gray-800">Calories:</span>{" "}
                                             {entry.calories} kcal
                                         </p>
                                     </div>
-                                    <div className="flex items-center justify-center space-x-2">
+                                    <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-2))] rounded"></div>
                                         <p className="text-sm text-gray-600">
                                             <span className="font-medium text-gray-800">Steps:</span> {entry.steps}
                                         </p>
                                     </div>
-                                    <div className="flex items-center justify-center space-x-2">
+                                    <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-3))] rounded"></div>
                                         <p className="text-sm text-gray-600">
                                             <span className="font-medium text-gray-800">Repas:</span>{" "}
@@ -186,6 +199,11 @@ export default function DailyEntriesPage() {
                                         </p>
                                     </div>
                                 </div>
+
+                                {/* Date */}
+                                <p className="mt-4 text-xs text-gray-500">
+                                    {new Date(entry.date).toLocaleDateString()}
+                                </p>
                             </CardContent>
                         </Card>
                     </Link>
