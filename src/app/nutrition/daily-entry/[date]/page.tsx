@@ -12,6 +12,7 @@ import { Trash2 } from "lucide-react";
 import { updateDailyCalories } from "@/utils/updateDailyCalories";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useToast } from "@/hooks/use-toast";
+import CalendarDailyEntry from "@/components/calendar-daily-entry";
 
 interface DailyEntry {
     date: string;
@@ -163,6 +164,10 @@ export default function MealsPage({ params }: any) {
                     </div>
                 </CardContent>
             </Card>
+
+            <div className="fixed top-4 right-4 z-10 bg-white">
+                <CalendarDailyEntry defaultDate={date} />
+            </div>
 
             <h2 className="text-xl font-semibold mb-4">Repas de la journée</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
