@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 
 type DailyEntry = {
     calories: number;
+    caloriesBurn: number;
     steps: number;
     createdAt: {
         _seconds: number;
@@ -80,6 +81,7 @@ export default function Dashboard() {
     }, [user, token]);
 
     const averageCalories = dailyEntries.reduce((sum, entry) => sum + entry.calories, 0) / dailyEntries.length;
+    const averageCaloriesBurn = dailyEntries.reduce((sum, entry) => sum + entry.caloriesBurn, 0) / dailyEntries.length;
     const averageSteps = dailyEntries.reduce((sum, entry) => sum + entry.steps, 0) / dailyEntries.length;
     const averageMeals = dailyEntries.reduce((sum, entry) => sum + entry.meals.length, 0) / dailyEntries.length;
 
@@ -109,6 +111,13 @@ export default function Dashboard() {
         return {
             date,
             calories: entry ? entry.calories : 0, // Utiliser 0 si le jour est manquant
+        };
+    });
+    const caloriesBurnData = last7Days.map((date) => {
+        const entry = dailyEntries.find((e) => e.date === date);
+        return {
+            date,
+            caloriesBurn: entry ? entry.caloriesBurn : 0, // Utiliser 0 si le jour est manquant
         };
     });
 
@@ -184,7 +193,7 @@ export default function Dashboard() {
                     <p className="text-gray-500 text-center">Veuillez vous connecter pour accéder aux données.</p>
                 )}
                 {caloriesData?.length > 0 && <ActiveCalories data={caloriesData} />}
-                {mealsData?.length > 0 && <WeeklyMeals data={mealsData} />}
+                {caloriesBurnData?.length > 0 && <WeeklyMeals data={caloriesBurnData} />}
             </div>
         </div>
     );

@@ -13,6 +13,7 @@ type Meal = {
 
 type DailyEntry = {
     calories: number;
+    caloriesBurn: number;
     meals: Meal[];
     date: string;
     createdAt: {
