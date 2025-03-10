@@ -22,6 +22,7 @@ type Meal = {
 
 type DailyEntry = {
     calories: number;
+    caloriesBurn: number;
     steps: number;
     createdAt: {
         _seconds: number;
@@ -130,8 +131,8 @@ export default function DailyEntriesPage() {
                                                 label: "Steps",
                                                 color: "hsl(var(--chart-2))",
                                             },
-                                            meals: {
-                                                label: "Meals",
+                                            caloriesBurn: {
+                                                label: "Calories Brûlées",
                                                 color: "hsl(var(--chart-3))",
                                             },
                                         }}
@@ -145,18 +146,21 @@ export default function DailyEntriesPage() {
                                             }}
                                             data={[
                                                 {
-                                                    activity: "meals",
-                                                    value: (entry.meals.length / 5) * 100,
+                                                    activity: "caloriesBurn",
+                                                    value: Math.min((entry.caloriesBurn * 100) / 500, 100),
                                                     fill: "var(--color-meals)",
                                                 },
                                                 {
                                                     activity: "steps",
-                                                    value: (entry.steps / 3000) * 100,
+                                                    value: Math.min((entry.steps * 100) / 3000, 100),
                                                     fill: "var(--color-steps)",
                                                 },
                                                 {
                                                     activity: "calories",
-                                                    value: (entry.calories / (user?.calories ?? 2000)) * 100,
+                                                    value: Math.min(
+                                                        (entry.calories * 100) / (user?.calories ?? 2000),
+                                                        100
+                                                    ),
                                                     fill: "var(--color-calories)",
                                                 },
                                             ]}
@@ -194,8 +198,8 @@ export default function DailyEntriesPage() {
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-3))] rounded"></div>
                                         <p className="text-sm text-gray-600">
-                                            <span className="font-medium text-gray-800">Repas:</span>{" "}
-                                            {entry.meals.length}
+                                            <span className="font-medium text-gray-800">Calories Brûlées:</span>{" "}
+                                            {entry.caloriesBurn ?? 0} kcal
                                         </p>
                                     </div>
                                 </div>

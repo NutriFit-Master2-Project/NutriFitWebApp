@@ -122,7 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 localStorage.setItem("token", data.token);
 
                 // If it's user first connexion then go to page to set user details data
-                userInfo.activites ? router.push("/nutrition/daily-entries") : router.push("/user-info");
+                userInfo.activites ? router.push("/dashboard") : router.push("/user-info");
             } else {
                 throw new Error("Impossible de récupérer les informations utilisateur");
             }

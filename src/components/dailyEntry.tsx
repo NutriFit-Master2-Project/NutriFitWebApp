@@ -10,6 +10,7 @@ import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 type DailyEntry = {
     steps: number;
     calories: number;
+    caloriesBurn: number;
     date: string;
     meals: { id: string }[];
 };
@@ -45,6 +46,10 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
 
                 const data: DailyEntry = await res.json();
                 setDailyEntry(data);
+                console.log(
+                    "🚀 ~ fetchDailyEntry ~ (dailyEntry!.steps * 100) / 3000:",
+                    (dailyEntry?.steps ?? 1 * 100) / 3000
+                );
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -76,9 +81,16 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                 <CardContent className="flex gap-4 p-4 cursor-pointer">
                     <div className="grid items-center gap-2">
                         <div className="grid flex-1 auto-rows-min gap-0.5">
-                            <div className="text-sm text-muted-foreground">Calories</div>
+                            <div className="text-sm text-muted-foreground">Calories Consommées</div>
                             <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
-                                {Number(dailyEntry.calories).toFixed(0)}/{Number(dailyCalories)?.toFixed(0) ?? 2000}
+                                {Number(dailyEntry.calories).toFixed(0)}
+                                <span className="text-sm font-normal text-muted-foreground">kcal</span>
+                            </div>
+                        </div>
+                        <div className="grid flex-1 auto-rows-min gap-0.5">
+                            <div className="text-sm text-muted-foreground">Calories Brûlées</div>
+                            <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
+                                {Number(dailyEntry.caloriesBurn).toFixed(0)}
                                 <span className="text-sm font-normal text-muted-foreground">kcal</span>
                             </div>
                         </div>
@@ -89,26 +101,19 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                                 <span className="text-sm font-normal text-muted-foreground">steps</span>
                             </div>
                         </div>
-                        <div className="grid flex-1 auto-rows-min gap-0.5">
-                            <div className="text-sm text-muted-foreground">Meals</div>
-                            <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
-                                {dailyEntry.meals.length}/5
-                                <span className="text-sm font-normal text-muted-foreground">meals</span>
-                            </div>
-                        </div>
                     </div>
                     <ChartContainer
                         config={{
                             calories: {
-                                label: "Calories",
+                                label: "Calories Consommées",
                                 color: "hsl(var(--chart-1))",
+                            },
+                            caloriesBurn: {
+                                label: "Calories Brûlées",
+                                color: "hsl(var(--chart-2))",
                             },
                             steps: {
                                 label: "Steps",
-                                color: "hsl(var(--chart-2))",
-                            },
-                            meals: {
-                                label: "Meals",
                                 color: "hsl(var(--chart-3))",
                             },
                         }}
@@ -123,18 +128,18 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                             }}
                             data={[
                                 {
-                                    activity: "meals",
-                                    value: (dailyEntry.meals.length / 5) * 100,
-                                    fill: "var(--color-meals)",
-                                },
-                                {
                                     activity: "steps",
-                                    value: (dailyEntry.steps / 3000) * 100,
+                                    value: Math.min((dailyEntry.steps * 100) / 3000, 100),
                                     fill: "var(--color-steps)",
                                 },
                                 {
+                                    activity: "caloriesBurn",
+                                    value: Math.min((dailyEntry.caloriesBurn * 100) / 500, 100),
+                                    fill: "var(--color-caloriesBurn)",
+                                },
+                                {
                                     activity: "calories",
-                                    value: (dailyEntry.calories / (dailyCalories ?? 2000)) * 100,
+                                    value: Math.min((dailyEntry.calories * 100) / (dailyCalories ?? 2000), 100),
                                     fill: "var(--color-calories)",
                                 },
                             ]}
