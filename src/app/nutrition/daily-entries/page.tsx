@@ -64,7 +64,7 @@ export default function DailyEntriesPage() {
                         },
                     });
                     if (!res.ok) {
-                        throw new Error("Erreur lors de la récupération des daily entries.");
+                        throw new Error("Erreur lors de la récupération des repas journalié.");
                     }
                     const data: DailyEntry[] = await res.json();
                     setDailyEntries(data);
@@ -108,7 +108,7 @@ export default function DailyEntriesPage() {
                 <p className="text-gray-500 text-center">Veuillez vous connecter pour accéder aux données.</p>
             )}
 
-            <h1 className="text-3xl font-bold text-gray-800 mb-8 pt-20">Liste des Daily Entries</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-8 pt-20">Liste des repas journalié</h1>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                 {dailyEntries.map((entry, index) => (

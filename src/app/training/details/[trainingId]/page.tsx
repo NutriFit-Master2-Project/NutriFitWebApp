@@ -54,6 +54,7 @@ const ExercisesPage = ({ params }: any) => {
                         setTrainingTotalCalories(training.totalCalories);
                         setExercises(training.exercises);
                         setTrainingName(training.name);
+                        console.log("🚀 ~ fetchExercises ~ training.exercises:", training.exercises);
                     } else {
                         throw new Error("Entraînement non trouvé");
                     }
@@ -124,21 +125,24 @@ const ExercisesPage = ({ params }: any) => {
                             <CardTitle className="text-2xl">{exercise.name}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {exercise.image && (
-                                <Image
-                                    src="/training/Force Globale.jpg"
-                                    // src={`/exercises/${exercise.image}.jpg`}
-                                    alt={exercise.name}
-                                    width={200}
-                                    height={200}
-                                    className="mt-2 w-full object-contain rounded-lg"
-                                />
-                            )}
-                            <p className="text-xl font-bold pt-4">Muscles: {exercise.muscles.join(", ")}</p>
-                            <p className="text-l text-gray-500 font-bold">
-                                Séries: {exercise.series} - Répétitions: {exercise.repetitions}
-                            </p>
-                            <p className="text-sm text-gray-500">{exercise.description}</p>
+                            <div className="flex flex-col items-center justify-between">
+                                {exercise.image && (
+                                    <Image
+                                        src={`/exercisesImages/${exercise.image}.png`}
+                                        alt={exercise.name}
+                                        width={200}
+                                        height={200}
+                                        className="mt-2 w-full object-contain rounded-lg"
+                                    />
+                                )}
+                                <div className="mt-4 w-full">
+                                    <p className="text-xl font-bold pt-4">Muscles: {exercise.muscles.join(", ")}</p>
+                                    <p className="text-l text-gray-500 font-bold">
+                                        Séries: {exercise.series} - Répétitions: {exercise.repetitions}
+                                    </p>
+                                    <p className="text-sm text-gray-500">{exercise.description}</p>
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 ))}

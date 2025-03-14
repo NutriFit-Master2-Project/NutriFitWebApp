@@ -11,7 +11,6 @@ const CalendarDailyEntry: React.FC<CalendarDailyEntryProps> = ({ defaultDate }) 
     useEffect(() => {
         if (defaultDate) {
             const utcDate = new Date(defaultDate + "T00:00:00Z");
-            utcDate.setUTCDate(utcDate.getUTCDate() + 1);
             setDate(utcDate);
         } else {
             setDate(new Date());
