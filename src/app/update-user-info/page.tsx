@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, Weight, Ruler, Activity, Target, CircleUser, Zap, Trophy } from "lucide-react";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
@@ -21,7 +21,7 @@ interface UserInfo {
     objective: "WEIGHTGAIN" | "WEIGHTLOSS";
 }
 
-export default function UserInfoForm() {
+export default function EditProfilePage() {
     const { user, token } = useAuth();
     const router = useRouter();
 
@@ -33,52 +33,67 @@ export default function UserInfoForm() {
         activites: "ACTIVE",
         objective: "WEIGHTGAIN",
     });
+    const [loading, setLoading] = useState(true);
+
     const userInfoActivityMap = new Map([
         ["SEDENTARY", "Sédentaire"],
         ["ACTIVE", "Actif"],
         ["SPORTIVE", "Sportif"],
     ]);
 
+    useEffect(() => {
+        if (!user || !token) return;
+
+        const fetchUserInfo = async () => {
+            try {
+                const response = await fetchWithInterceptor(
+                    `https://nutrifitbackend-2v4o.onrender.com/api/user-info/${user.userId}`,
+                    {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json", "auth-token": token },
+                    }
+                );
+
+                if (!response.ok) throw new Error("Erreur lors du chargement des données");
+
+                const data = await response.json();
+                setUserInfo(data);
+            } catch (error) {
+                console.error("Erreur:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserInfo();
+    }, [user, token]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setUserInfo({
             ...userInfo,
-            [name]:
-                name === "age" || name === "weight" || name === "size" ? (value ? Number(value) : undefined) : value,
+            [name]: name === "age" || name === "weight" || name === "size" ? Number(value) : value,
         });
     };
 
     const handleGenderUpdate = (value: string) => {
-        setUserInfo({
-            ...userInfo,
-            genre: value === "homme" ? false : true,
-        });
+        setUserInfo({ ...userInfo, genre: value === "femme" });
     };
 
     const handleActivitesChange = (value: "SEDENTARY" | "ACTIVE" | "SPORTIVE") => {
-        setUserInfo({
-            ...userInfo,
-            activites: value,
-        });
+        setUserInfo({ ...userInfo, activites: value });
     };
 
     const handleObjectiveChange = (value: "WEIGHTGAIN" | "WEIGHTLOSS") => {
-        setUserInfo({
-            ...userInfo,
-            objective: value,
-        });
+        setUserInfo({ ...userInfo, objective: value });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         try {
             const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/user-info", {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": token ?? "",
-                },
+                headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
                 body: JSON.stringify({ ...userInfo, id: user?.userId }),
             });
 
@@ -86,19 +101,21 @@ export default function UserInfoForm() {
                 throw new Error(`Erreur: ${response.status}`);
             }
 
-            await response.json();
-
-            router.push("/nutrition/daily-entries");
+            router.push("/dashboard");
         } catch (error) {
-            console.error("Erreur lors de l'envoi des données:", error);
+            console.error("Erreur lors de la mise à jour:", error);
         }
     };
+
+    if (loading) {
+        return <p className="text-center text-gray-500 text-lg font-semibold">⏳ Chargement des informations...</p>;
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-md p-4">
                 <CardHeader>
-                    <CardTitle className="text-2xl font-bold">Informations utilisateur</CardTitle>
+                    <CardTitle className="text-2xl font-bold">Modifier mon profil</CardTitle>
                 </CardHeader>
 
                 <CardContent>
@@ -106,57 +123,57 @@ export default function UserInfoForm() {
                         <div>
                             <div className="mb-4 flex items-center space-x-4">
                                 <Calendar className="text-gray-500" />
-                                <Label htmlFor="age">Quel âge avez-vous ?</Label>
+                                <Label htmlFor="age">Âge</Label>
                             </div>
                             <Input
                                 type="number"
                                 id="age"
                                 name="age"
-                                value={userInfo.age}
+                                value={userInfo.age || ""}
                                 onChange={handleChange}
                                 required
-                                className="mt-1"
                             />
                         </div>
 
                         <div>
                             <div className="mb-4 flex items-center space-x-2">
                                 <Weight className="text-gray-500" />
-                                <Label htmlFor="weight">Combien pesez-vous ? (kg)</Label>
+                                <Label htmlFor="weight">Poids (kg)</Label>
                             </div>
                             <Input
                                 type="number"
                                 id="weight"
                                 name="weight"
-                                value={userInfo.weight}
+                                value={userInfo.weight || ""}
                                 onChange={handleChange}
                                 required
-                                className="mt-1"
                             />
                         </div>
 
                         <div>
                             <div className="mb-4 flex items-center space-x-2">
                                 <Ruler className="text-gray-500" />
-                                <Label htmlFor="size">Combien mesurez-vous ? (cm)</Label>
+                                <Label htmlFor="size">Taille (cm)</Label>
                             </div>
                             <Input
                                 type="number"
                                 id="size"
                                 name="size"
-                                value={userInfo.size}
+                                value={userInfo.size || ""}
                                 onChange={handleChange}
                                 required
-                                className="mt-1"
                             />
                         </div>
 
                         <div>
                             <div className="mb-4 flex items-center space-x-2">
                                 <CircleUser className="text-gray-500" />
-                                <Label htmlFor="genre">À quel genre appartenez-vous ?</Label>
+                                <Label>Genre</Label>
                             </div>
-                            <Select onValueChange={handleGenderUpdate}>
+                            <Select
+                                onValueChange={handleGenderUpdate}
+                                defaultValue={userInfo.genre ? "femme" : "homme"}
+                            >
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder={userInfo.genre ? "Femme" : "Homme"} />
                                 </SelectTrigger>
@@ -170,14 +187,12 @@ export default function UserInfoForm() {
                         <div>
                             <div className="mb-4 flex items-center space-x-2">
                                 <Zap className="text-gray-500" />
-                                <Label htmlFor="activites">Évaluez votre activité journalière</Label>
+                                <Label>Activité</Label>
                             </div>
-                            <Select onValueChange={handleActivitesChange}>
+                            <Select onValueChange={handleActivitesChange} defaultValue={userInfo.activites}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue
-                                        placeholder={
-                                            userInfo.activites ? userInfoActivityMap.get(userInfo.activites) : ""
-                                        }
+                                        placeholder={userInfoActivityMap.get(userInfo.activites ?? "SEDENTARY")}
                                     />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -191,9 +206,9 @@ export default function UserInfoForm() {
                         <div>
                             <div className="mb-4 flex items-center space-x-2">
                                 <Trophy className="text-gray-500" />
-                                <Label htmlFor="objective">Quel est votre objectif avec NutriFit ?</Label>
+                                <Label>Objectif</Label>
                             </div>
-                            <Select onValueChange={handleObjectiveChange}>
+                            <Select onValueChange={handleObjectiveChange} defaultValue={userInfo.objective}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue
                                         placeholder={
@@ -210,7 +225,7 @@ export default function UserInfoForm() {
 
                         <CardFooter>
                             <Button type="submit" className="w-full">
-                                Enregistrer
+                                Mettre à jour
                             </Button>
                         </CardFooter>
                     </form>

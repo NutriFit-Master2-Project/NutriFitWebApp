@@ -154,30 +154,25 @@ export function Navigation() {
                                 href="#"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
-                                <Settings className="h-5 w-5" />
-                                <span className="sr-only">Settings</span>
+                                <LogOut />
+                                <span className="sr-only">Logout</span>
                             </Link>
                         </TooltipTrigger>
-                        <TooltipContent side="right">Settings</TooltipContent>
+                        <TooltipContent side="right">Logout</TooltipContent>
                     </Tooltip>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="secondary" size="icon" className="rounded-full">
-                                <CircleUser className="h-5 w-5" />
-                                <span className="sr-only">Toggle user menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem>Support</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <LogOut /> Logout
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/update-user-info"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                            >
+                                <CircleUser />
+                                <span className="sr-only">Mes informations</span>
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">Mes informations</TooltipContent>
+                    </Tooltip>
                 </nav>
             </aside>
             {/* FOR MOBILE */}
