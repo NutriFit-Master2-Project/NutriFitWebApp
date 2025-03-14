@@ -1,0 +1,48 @@
+name: Deploy to Cloud Run
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+env:
+    PROJECT_ID: nutrifit-453715 # Remplacez par votre ID de projet GCP
+    SERVICE_NAME: nutri-fit-front # Nom de votre service Cloud Run
+    REGION: europe-west1 # Région de déploiement
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Google Auth
+              id: auth
+              uses: google-github-actions/auth@v1
+              with:
+                  credentials_json: ${{ secrets.GCP_SA_KEY }}
+                  project_id: ${{ env.PROJECT_ID }}
+
+            - name: Set up Cloud SDK
+              uses: google-github-actions/setup-gcloud@v1
+              with:
+                  project_id: ${{ env.PROJECT_ID }}
+
+            - name: Authorize Docker push
+              run: gcloud auth configure-docker
+
+            - name: Build and Push Container
+              run: |
+                  docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+                  docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+
+            - name: Deploy to Cloud Run
+              run: |
+                  gcloud run deploy ${{ env.SERVICE_NAME }} \
+                    --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} \
+                    --region ${{ env.REGION }} \
+                    --platform managed \
+                    --allow-unauthenticated \
+                    --port 3000
