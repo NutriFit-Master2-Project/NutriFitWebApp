@@ -19,6 +19,7 @@ import { getFormattedDate } from "@/utils/getFormattedDate";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { updateDailyCalories } from "@/utils/updateDailyCalories";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 interface Product {
     _id: string;
@@ -51,6 +52,7 @@ const ProductListPage = () => {
     const [quantity, setQuantity] = useState("");
     const [confirmAddToTodayMeal, setConfirmAddToTodayMeal] = useState<Product | null>(null);
     const { toast } = useToast();
+    const router = useRouter();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -59,6 +61,8 @@ const ProductListPage = () => {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 

@@ -23,7 +23,7 @@ export default function WeeklyMeals({ data }: WeeklyMealsProps) {
                 <CardTitle className="flex items-baseline gap-1 text-4xl tabular-nums">
                     {averageCaloriesBurn}
                     <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
-                        kcal/day
+                        kcal/jour
                     </span>
                 </CardTitle>
             </CardHeader>

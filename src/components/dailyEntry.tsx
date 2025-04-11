@@ -95,10 +95,10 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                             </div>
                         </div>
                         <div className="grid flex-1 auto-rows-min gap-0.5">
-                            <div className="text-sm text-muted-foreground">Steps</div>
+                            <div className="text-sm text-muted-foreground">Pas</div>
                             <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
                                 {dailyEntry.steps}/3000
-                                <span className="text-sm font-normal text-muted-foreground">steps</span>
+                                <span className="text-sm font-normal text-muted-foreground">pas</span>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                                 color: "hsl(var(--chart-2))",
                             },
                             steps: {
-                                label: "Steps",
+                                label: "Pas",
                                 color: "hsl(var(--chart-3))",
                             },
                         }}

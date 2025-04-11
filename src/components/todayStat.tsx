@@ -78,11 +78,11 @@ export default function TodayStat({ userId, date, token, dailyCalories }: DailyE
                             color: "hsl(var(--chart-1))",
                         },
                         steps: {
-                            label: "Steps",
+                            label: "Pas",
                             color: "hsl(var(--chart-2))",
                         },
                         meals: {
-                            label: "Meals",
+                            label: "Repas",
                             color: "hsl(var(--chart-3))",
                         },
                     }}
@@ -97,21 +97,21 @@ export default function TodayStat({ userId, date, token, dailyCalories }: DailyE
                         }}
                         data={[
                             {
-                                activity: "meals",
+                                activity: "repas",
                                 value: (dailyEntry.meals.length / 5) * 100,
-                                label: `${dailyEntry.meals.length}meals`,
+                                label: `${dailyEntry.meals.length} repas`,
                                 fill: "var(--color-meals)",
                             },
                             {
-                                activity: "steps",
+                                activity: "pas",
                                 value: (dailyEntry.steps / 3000) * 100,
-                                label: `${dailyEntry.steps}steps`,
+                                label: `${dailyEntry.steps} pas`,
                                 fill: "var(--color-steps)",
                             },
                             {
                                 activity: "calories",
                                 value: (dailyEntry.calories / (dailyCalories ?? 2000)) * 100,
-                                label: `${Number(dailyEntry.calories).toFixed(0)}kcal`,
+                                label: `${Number(dailyEntry.calories).toFixed(0)} kcal`,
                                 fill: "var(--color-calories)",
                             },
                         ]}
@@ -145,18 +145,18 @@ export default function TodayStat({ userId, date, token, dailyCalories }: DailyE
                     </div>
                     <Separator orientation="vertical" className="mx-2 h-10 w-px" />
                     <div className="grid flex-1 auto-rows-min gap-0.5">
-                        <div className="text-xs text-muted-foreground">Steps</div>
+                        <div className="text-xs text-muted-foreground">Pas</div>
                         <div className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
                             {dailyEntry.steps}
-                            <span className="text-sm font-normal text-muted-foreground">steps</span>
+                            <span className="text-sm font-normal text-muted-foreground">pas</span>
                         </div>
                     </div>
                     <Separator orientation="vertical" className="mx-2 h-10 w-px" />
                     <div className="grid flex-1 auto-rows-min gap-0.5">
-                        <div className="text-xs text-muted-foreground">Meals</div>
+                        <div className="text-xs text-muted-foreground">Repas</div>
                         <div className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
                             {dailyEntry.meals.length}
-                            <span className="text-sm font-normal text-muted-foreground">meals</span>
+                            <span className="text-sm font-normal text-muted-foreground">repas</span>
                         </div>
                     </div>
                 </div>

@@ -36,6 +36,7 @@ export default function MealsPage({ params }: any) {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
     const { toast } = useToast();
+    const router = useRouter();
 
     const [dailyEntry, setDailyEntry] = useState<DailyEntry | null>(null);
     const [meals, setMeals] = useState<Meal[]>([]);
@@ -48,6 +49,8 @@ export default function MealsPage({ params }: any) {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 

@@ -19,10 +19,10 @@ export default function WeeklyCalories({ data }: WeeklyCaloriesProps) {
         <Card className="flex flex-col lg:max-w-md" x-chunk="charts-01-chunk-1">
             <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2 [&>div]:flex-1">
                 <div>
-                    <CardDescription>Average calories consumed</CardDescription>
+                    <CardDescription>Calories moyennes consommées</CardDescription>
                     <CardTitle className="flex items-baseline gap-1 text-4xl tabular-nums">
                         {averageCalories}
-                        <span className="text-sm font-normal tracking-normal text-muted-foreground">kcal/day</span>
+                        <span className="text-sm font-normal tracking-normal text-muted-foreground">kcal/jour</span>
                     </CardTitle>
                 </div>
             </CardHeader>

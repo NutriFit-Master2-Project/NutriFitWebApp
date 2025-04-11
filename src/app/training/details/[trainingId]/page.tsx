@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { useToast } from "@/hooks/use-toast";
 import { getFormattedDate } from "@/utils/getFormattedDate";
+import { useRouter } from "next/navigation";
 
 const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
 
@@ -21,6 +22,7 @@ const ExercisesPage = ({ params }: any) => {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
     const { toast } = useToast();
+    const router = useRouter();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -28,6 +30,8 @@ const ExercisesPage = ({ params }: any) => {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 

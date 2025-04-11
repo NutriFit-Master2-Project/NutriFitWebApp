@@ -10,6 +10,7 @@ import WeeklyCalories from "@/components/weekly-calories";
 import WeeklyMeals from "@/components/weekly-meals";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type DailyEntry = {
     calories: number;
@@ -40,6 +41,7 @@ export default function Dashboard() {
     const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
 
     const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
 
@@ -50,6 +52,8 @@ export default function Dashboard() {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 

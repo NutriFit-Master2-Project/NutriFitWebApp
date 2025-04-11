@@ -18,16 +18,16 @@ export default function ActiveCalories({ data }: ActiveEnergyProps) {
     return (
         <Card className="max-w-xs" x-chunk="charts-01-chunk-3">
             <CardHeader className="p-4 pb-0">
-                <CardTitle>Active Energy</CardTitle>
+                <CardTitle>Énergie Active</CardTitle>
                 <CardDescription>
-                    You're eating an average of {averageCalories.toFixed(0)} calories per day.
+                    Vous consommez en moyenne {averageCalories.toFixed(0)} calories par jour.
                 </CardDescription>
             </CardHeader>
 
             <CardContent className="flex flex-row items-baseline gap-4 p-4 pt-3">
                 <div className="flex items-baseline gap-1 text-3xl font-bold tabular-nums leading-none">
                     {averageCalories.toFixed(0)}
-                    <span className="text-sm font-normal text-muted-foreground">kcal/day</span>
+                    <span className="text-sm font-normal text-muted-foreground">kcal/jour</span>
                 </div>
                 <ChartContainer
                     config={{

@@ -5,6 +5,7 @@ import { Card, CardHeader, CardDescription, CardTitle, CardContent, CardFooter }
 import { BarChart, Bar, XAxis, ReferenceLine, Label } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import { useRouter } from "next/navigation";
 
 type DailyEntry = {
     calories: number;
@@ -34,6 +35,7 @@ export default function StepsCard() {
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
 
     const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
 
@@ -44,6 +46,8 @@ export default function StepsCard() {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 
@@ -190,7 +194,7 @@ export default function StepsCard() {
                     <span className="font-medium text-foreground">{totalSteps}</span> pas.
                 </CardDescription>
                 <CardDescription>
-                    Vous devez encore{" "}
+                    Vous devez encore marcher{" "}
                     <span className="font-medium text-foreground">
                         {stepsGoal - (stepsData[stepsData.length - 1]?.steps ?? 0)}
                     </span>{" "}

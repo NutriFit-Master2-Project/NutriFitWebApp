@@ -18,18 +18,18 @@ export default function WalkingDistance({ data }: WalkingDistanceProps) {
     return (
         <Card className="max-w-xs" x-chunk="charts-01-chunk-3">
             <CardHeader className="p-4 pb-0">
-                <CardTitle>Walking Distance</CardTitle>
-                <CardDescription>Over the last 7 days, your average daily steps were:</CardDescription>
+                <CardTitle>Distance de marche</CardTitle>
+                <CardDescription>Sur les 7 derniers jours, votre moyenne quotidienne était :</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-row items-baseline gap-4 p-4 pt-0">
                 <div className="flex items-baseline gap-1 text-3xl font-bold tabular-nums leading-none">
                     {averageSteps.toFixed(0)}
-                    <span className="text-sm font-normal text-muted-foreground">steps/day</span>
+                    <span className="text-sm font-normal text-muted-foreground">pas/jour</span>
                 </div>
                 <ChartContainer
                     config={{
                         steps: {
-                            label: "Steps",
+                            label: "Pas",
                             color: "hsl(var(--chart-2))",
                         },
                     }}

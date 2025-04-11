@@ -35,16 +35,16 @@ const SignUp = () => {
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
                     <div className="grid gap-2 text-center">
-                        <h1 className="text-3xl font-bold">Sign Up</h1>
-                        {error && <p className="text-red-500 text-sm">{error}</p>} {/* Afficher l'erreur ici */}
+                        <h1 className="text-3xl font-bold">Inscription</h1>
+                        {error && <p className="text-red-500 text-sm">Échec de l'inscription. Veuillez réessayer.</p>}
                     </div>
                     <form onSubmit={handleSignUp} className="grid gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name">Nom</Label>
                             <Input
                                 id="name"
                                 type="name"
-                                placeholder="m@example.com"
+                                placeholder="Jean Dupont"
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -55,7 +55,7 @@ const SignUp = () => {
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="m@example.com"
+                                placeholder="j.dupont@exemple.com"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +63,7 @@ const SignUp = () => {
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">Mot de passe</Label>
                             </div>
                             <Input
                                 id="password"
@@ -74,13 +74,13 @@ const SignUp = () => {
                             />
                         </div>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Signing up..." : "Sign Up"}
+                            {loading ? "Inscription en cours..." : "S'inscrire"}
                         </Button>
                     </form>
                     <div className="mt-4 text-center text-sm">
-                        Already have an account?{" "}
+                        Vous avez déjà un compte ?{" "}
                         <Link href="/auth/sign-in" className="underline">
-                            Log in
+                            Se connecter
                         </Link>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ const SignIn = () => {
         try {
             await signIn(email, password);
         } catch (error) {
-            setError("Failed to log in. Please check your credentials.");
+            setError("Échec de la connexion. Veuillez vérifier vos identifiants.");
         } finally {
             setLoading(false);
         }
@@ -35,7 +35,7 @@ const SignIn = () => {
             <div className="flex items-center justify-center py-12">
                 <div className="mx-auto grid w-[350px] gap-6">
                     <div className="grid gap-2 text-center">
-                        <h1 className="text-3xl font-bold">Login</h1>
+                        <h1 className="text-3xl font-bold">Connexion</h1>
                         {error && <p className="text-red-500 text-sm">{error}</p>}
                     </div>
                     <form onSubmit={handleLogin} className="grid gap-4">
@@ -44,7 +44,7 @@ const SignIn = () => {
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="m@example.com"
+                                placeholder="m@exemple.com"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -52,7 +52,7 @@ const SignIn = () => {
                         </div>
                         <div className="grid gap-2">
                             <div className="flex items-center">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">Mot de passe</Label>
                             </div>
                             <Input
                                 id="password"
@@ -63,13 +63,13 @@ const SignIn = () => {
                             />
                         </div>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Logging in..." : "Login"}
+                            {loading ? "Connexion en cours..." : "Se connecter"}
                         </Button>
                     </form>
                     <div className="mt-4 text-center text-sm">
-                        Don&apos;t have an account?{" "}
+                        Vous n'avez pas de compte ?{" "}
                         <Link href="/auth/sign-up" className="underline">
-                            Sign up
+                            S'inscrire
                         </Link>
                     </div>
                 </div>

@@ -6,6 +6,7 @@ import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface Product {
     _id: string;
@@ -44,6 +45,7 @@ const RecommendDishPage = () => {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
     const { toast } = useToast();
+    const router = useRouter();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -52,6 +54,8 @@ const RecommendDishPage = () => {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 

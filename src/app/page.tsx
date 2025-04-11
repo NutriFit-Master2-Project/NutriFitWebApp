@@ -17,11 +17,11 @@ export default function Home() {
                 </p>
                 <div className="space-x-4">
                     <Link href="/auth/sign-in">
-                        <Button>Sign In</Button>
+                        <Button>Connexion</Button>
                     </Link>
 
                     <Link href="/auth/sign-up">
-                        <Button variant="outline">Sign Up</Button>
+                        <Button variant="outline">Inscription</Button>
                     </Link>
                 </div>
             </div>

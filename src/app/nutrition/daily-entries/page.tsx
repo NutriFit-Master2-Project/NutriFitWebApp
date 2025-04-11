@@ -8,6 +8,7 @@ import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import DailyEntryCard from "@/components/dailyEntry";
 import { getFormattedDate } from "@/utils/getFormattedDate";
+import { useRouter } from "next/navigation";
 
 type Meal = {
     id: string;
@@ -36,6 +37,7 @@ export default function DailyEntriesPage() {
     const [dailyEntries, setDailyEntries] = useState<DailyEntry[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const router = useRouter();
 
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -49,6 +51,8 @@ export default function DailyEntriesPage() {
         if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
+        } else {
+            router.push("/auth/sign-in");
         }
     }, []);
 
@@ -105,10 +109,10 @@ export default function DailyEntriesPage() {
                     dailyCalories={user.calories}
                 />
             ) : (
-                <p className="text-gray-500 text-center">Veuillez vous connecter pour accéder aux données.</p>
+                <p className="text-gray-500 text-center">Veuillez vous connecter pour accéder aux données</p>
             )}
 
-            <h1 className="text-3xl font-bold text-gray-800 mb-8 pt-20">Liste des repas journalié</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-8 pt-20">Journal Alimentaire</h1>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                 {dailyEntries.map((entry, index) => (
@@ -128,7 +132,7 @@ export default function DailyEntriesPage() {
                                                 color: "hsl(var(--chart-1))",
                                             },
                                             steps: {
-                                                label: "Steps",
+                                                label: "Pas",
                                                 color: "hsl(var(--chart-2))",
                                             },
                                             caloriesBurn: {
@@ -185,20 +189,20 @@ export default function DailyEntriesPage() {
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-1))] rounded"></div>
                                         <p className="text-sm text-gray-600">
-                                            <span className="font-medium text-gray-800">Calories:</span>{" "}
+                                            <span className="font-medium text-gray-800">Calories :</span>{" "}
                                             {entry.calories} kcal
                                         </p>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-2))] rounded"></div>
                                         <p className="text-sm text-gray-600">
-                                            <span className="font-medium text-gray-800">Steps:</span> {entry.steps}
+                                            <span className="font-medium text-gray-800">Pas :</span> {entry.steps}
                                         </p>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <div className="w-3 h-3 bg-[hsl(var(--chart-3))] rounded"></div>
                                         <p className="text-sm text-gray-600">
-                                            <span className="font-medium text-gray-800">Calories Brûlées:</span>{" "}
+                                            <span className="font-medium text-gray-800">Calories Brûlées :</span>{" "}
                                             {entry.caloriesBurn ?? 0} kcal
                                         </p>
                                     </div>

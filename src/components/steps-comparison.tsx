@@ -22,25 +22,25 @@ export default function StepsComparison({ data }: StepsComparisonProps) {
     return (
         <Card className="max-w-xs" x-chunk="charts-01-chunk-2">
             <CardHeader>
-                <CardTitle>Progress</CardTitle>
+                <CardTitle>Progrès</CardTitle>
                 <CardDescription>
                     {thisWeekAverage > lastWeekAverage
-                        ? "You're averaging more steps a day this week than last week. Keep it up!"
+                        ? "Vous faites plus de pas par jour cette semaine que la semaine dernière. Continuez ainsi !"
                         : thisWeekAverage < lastWeekAverage
-                        ? "You're averaging fewer steps a day this week than last week. Keep pushing!"
-                        : "You're averaging the same number of steps a day this week as last week. Great consistency!"}
+                        ? "Vous faites moins de pas par jour cette semaine que la semaine dernière. Continuez vos efforts !"
+                        : "Vous maintenez le même nombre de pas par jour cette semaine que la semaine dernière. Belle constance !"}
                 </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
                 <div className="grid auto-rows-min gap-2">
                     <div className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
                         {currentWeekData?.steps.toLocaleString() ?? "N/A"}
-                        <span className="text-sm font-normal text-muted-foreground">steps/day</span>
+                        <span className="text-sm font-normal text-muted-foreground">pas/jour</span>
                     </div>
                     <ChartContainer
                         config={{
                             steps: {
-                                label: "Steps",
+                                label: "Pas",
                                 color: "hsl(var(--chart-1))",
                             },
                         }}
@@ -69,12 +69,12 @@ export default function StepsComparison({ data }: StepsComparisonProps) {
                 <div className="grid auto-rows-min gap-2">
                     <div className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
                         {lastWeekData?.steps.toLocaleString() ?? "N/A"}
-                        <span className="text-sm font-normal text-muted-foreground">steps/day</span>
+                        <span className="text-sm font-normal text-muted-foreground">pas/jour</span>
                     </div>
                     <ChartContainer
                         config={{
                             steps: {
-                                label: "Steps",
+                                label: "Pas",
                                 color: "hsl(var(--muted))",
                             },
                         }}
