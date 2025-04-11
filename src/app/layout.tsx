@@ -31,9 +31,8 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <AuthProvider>
-                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
                         <div className="flex min-h-screen w-full flex-col">
-                            {/* TODO - Display nav only when logged-in */}
                             <Navigation />
                             <div className="flex flex-col sm:gap-4 sm:pl-14">{children}</div>
                         </div>
