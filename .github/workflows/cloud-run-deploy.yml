@@ -3,15 +3,18 @@ name: Deploy to Cloud Run
 on:
     push:
         branches: [main]
-    workflow_dispatch:
 
 env:
-    PROJECT_ID: nutrifit-453715 # Remplacez par votre ID de projet GCP
-    SERVICE_NAME: nutri-fit-front # Nom de votre service Cloud Run
-    REGION: europe-west1 # Région de déploiement
+    PROJECT_ID: nutrifit-453715 # ID de projet GCP
+    SERVICE_NAME: nutri-fit-front # Nom du service Cloud Run
+    REGION: europe-west1
 
 jobs:
+    verify_tests:
+        uses: ./.github/workflows/ci.yml
+
     deploy:
+        needs: [verify_tests]
         runs-on: ubuntu-latest
 
         steps:

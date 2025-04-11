@@ -9,8 +9,8 @@ import WalkingDistance from "@/components/walking-distance";
 import WeeklyCalories from "@/components/weekly-calories";
 import WeeklyMeals from "@/components/weekly-meals";
 import { getFormattedDate } from "@/utils/getFormattedDate";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type DailyEntry = {
     calories: number;
