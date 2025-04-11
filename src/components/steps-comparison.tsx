@@ -13,8 +13,8 @@ type StepsComparisonProps = {
 };
 
 export default function StepsComparison({ data }: StepsComparisonProps) {
-    const currentWeekData = data.find((entry) => entry.week === "This Week");
-    const lastWeekData = data.find((entry) => entry.week === "Last Week");
+    const currentWeekData = data.find((entry) => entry.week === "Cette semaine");
+    const lastWeekData = data.find((entry) => entry.week === "La semaine dernière");
 
     const thisWeekAverage = currentWeekData ? currentWeekData.steps : 0;
     const lastWeekAverage = lastWeekData ? lastWeekData.steps : 0;

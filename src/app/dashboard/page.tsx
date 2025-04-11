@@ -152,8 +152,8 @@ export default function Dashboard() {
 
     // Créer l'objet `data` pour StepsComparison
     const stepsComparisonData = [
-        { week: "This Week", steps: Math.round(thisWeekAverage) },
-        { week: "Last Week", steps: Math.round(lastWeekAverage) },
+        { week: "Cette semaine", steps: Math.round(thisWeekAverage) },
+        { week: "La semaine dernière", steps: Math.round(lastWeekAverage) },
     ];
 
     const mealsData = last7Days.map((date) => {

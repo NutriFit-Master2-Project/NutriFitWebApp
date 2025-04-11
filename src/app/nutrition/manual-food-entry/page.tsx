@@ -64,8 +64,8 @@ export default function ManualFoodEntryPage() {
                     body: JSON.stringify({
                         name: caloriesInfo.name,
                         calories: caloriesInfo.calories,
-                        quantity: caloriesInfo.quantity,
-                        image_url: "",
+                        quantity: String(caloriesInfo.quantity),
+                        image_url: "plateIA",
                     }),
                 }
             );

@@ -6,13 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { Trash2 } from "lucide-react";
 import { updateDailyCalories } from "@/utils/updateDailyCalories";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useToast } from "@/hooks/use-toast";
 import CalendarDailyEntry from "@/components/calendar-daily-entry";
+import { useRouter } from "next/navigation";
 
 interface DailyEntry {
     date: string;
