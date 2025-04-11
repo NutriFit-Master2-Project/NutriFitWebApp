@@ -170,7 +170,7 @@ export default function MealsPage({ params }: any) {
             </div>
 
             <h2 className="text-xl font-semibold mb-4">Repas de la journée</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
                 {meals.length > 0 ? (
                     meals.map((meal) => (
                         <Card key={meal.id} className="shadow-md relative">
@@ -183,13 +183,17 @@ export default function MealsPage({ params }: any) {
                                 <Trash2 className="w-6 h-6" />
                             </Button>
                             <CardHeader className="flex flex-col items-center">
-                                {meal.image_url && (
-                                    <img
-                                        src={meal.image_url}
-                                        alt={meal.name}
-                                        className="w-20 h-20 object-cover rounded-md mb-2"
-                                    />
-                                )}
+                                <img
+                                    src={
+                                        meal.image_url &&
+                                        meal.image_url.trim() !== "" &&
+                                        meal.image_url.trim() !== "plateIA"
+                                            ? meal.image_url
+                                            : "/logo.png"
+                                    }
+                                    alt={meal.name}
+                                    className="w-20 h-20 object-cover rounded-md mb-2"
+                                />
                                 <h3 className="text-base font-semibold text-center">{meal.name}</h3>
                                 <p className="text-xs text-gray-500 text-center">
                                     {meal.calories} kcal - Quantité: {meal.quantity}

@@ -3,20 +3,21 @@
 import React, { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FoodDetails } from "@/components/food-details"; // Composant réutilisable pour afficher les détails
+import { FoodDetails } from "@/components/food-details";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BarcodeScannerWithPopup from "@/components/barcode-scan";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Ghost } from "lucide-react";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import ManualFoodEntryPage from "../manual-food-entry/page";
 
 const FoodScanner: React.FC = () => {
     const [barcode, setBarcode] = useState<string>("");
     const [scannedData, setScannedData] = useState<any>(null);
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const [loading, setLoading] = useState(false);
-    const [adding, setAdding] = useState(false); // État pour le chargement de l'ajout
+    const [adding, setAdding] = useState(false);
     const { token, user } = useAuth();
     const { toast } = useToast();
 
@@ -158,6 +159,10 @@ const FoodScanner: React.FC = () => {
                     )}
                 </CardContent>
             </Card>
+
+            <div className="mt-8">
+                <ManualFoodEntryPage />
+            </div>
         </div>
     );
 };
