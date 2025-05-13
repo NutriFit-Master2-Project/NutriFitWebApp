@@ -55,7 +55,7 @@ export default function Home() {
                                 alt="Hero Image"
                                 width={100}
                                 height={40}
-                                className="object-contain w-full h-auto"
+                                className="object-contain h-auto"
                             />
                         </Link>
                     </div>

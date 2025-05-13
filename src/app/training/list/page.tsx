@@ -91,7 +91,7 @@ const TrainingsPage = () => {
                         className="relative cursor-pointer transform transition-transform hover:scale-105"
                     >
                         <Image
-                            src={`/training/${training.name}.jpg`}
+                            src={`/training/${training.name.replace(/\s+/g, "")}.jpg`}
                             alt={training.name}
                             width={400}
                             height={200}
