@@ -5,8 +5,8 @@ on:
         branches: [main]
 
 env:
-    PROJECT_ID: nutrifit-453715 # ID de projet GCP
-    SERVICE_NAME: nutri-fit-front # Nom du service Cloud Run
+    PROJECT_ID: nutrifit-459709
+    SERVICE_NAME: nutri-fit-front
     REGION: europe-west1
 
 jobs:
