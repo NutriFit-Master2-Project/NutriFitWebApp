@@ -34,7 +34,7 @@ export default function RootLayout({
                     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
                         <div className="flex min-h-screen w-full flex-col">
                             <Navigation />
-                            <div className="flex flex-col sm:gap-4 sm:pl-14">{children}</div>
+                            <div className="flex flex-col sm:gap-4 sm:pl-14 pb-16 sm:pb-0">{children}</div>
                         </div>
                         <Toaster />
                     </ThemeProvider>

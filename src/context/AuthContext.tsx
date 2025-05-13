@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
             if (!response.ok) {
                 const errorResponse = await response.json();
-                throw new Error("Inscription impossible" + errorResponse?.message);
+                throw new Error("Unable to register" + errorResponse?.message);
             }
 
             // Redirect after sign-up
