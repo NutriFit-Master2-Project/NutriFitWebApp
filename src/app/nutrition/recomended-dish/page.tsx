@@ -65,7 +65,7 @@ const RecommendDishPage = () => {
                 setError(null);
                 try {
                     const response = await fetchWithInterceptor(
-                        `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product-list/${user?.userId}`,
+                        `https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/product-list/${user?.userId}`,
                         {
                             method: "GET",
                             headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
@@ -97,11 +97,14 @@ const RecommendDishPage = () => {
         setLoading(true);
         try {
             const aliments = products.map((product) => product.product_name);
-            const response = await fetch("https://nutrifitbackend-2v4o.onrender.com/api/recommend-dish", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
-                body: JSON.stringify({ aliments }),
-            });
+            const response = await fetch(
+                "https://nutri-fit-back-576739684905.europe-west1.run.app/api/recommend-dish",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
+                    body: JSON.stringify({ aliments }),
+                }
+            );
 
             if (!response.ok) {
                 throw new Error("Erreur lors de la recommandation de plat");

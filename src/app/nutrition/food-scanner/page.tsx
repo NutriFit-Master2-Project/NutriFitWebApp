@@ -26,7 +26,7 @@ const FoodScanner: React.FC = () => {
         setLoading(true);
         try {
             const response = await fetchWithInterceptor(
-                `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/get-nutritional-info/${code}`,
+                `https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/get-nutritional-info/${code}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json", "auth-token": token ?? "" },
@@ -70,7 +70,7 @@ const FoodScanner: React.FC = () => {
 
         try {
             const response: Response = await fetchWithInterceptor(
-                `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/save-product/${user?.userId}`,
+                `https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/save-product/${user?.userId}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "auth-token": token ?? "" },

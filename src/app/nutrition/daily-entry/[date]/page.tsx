@@ -32,7 +32,7 @@ interface Meal {
 export default function MealsPage({ params }: any) {
     const { date } = params; // Récupérer la date depuis les paramètres de l'URL
 
-    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
     const { toast } = useToast();

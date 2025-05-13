@@ -73,7 +73,7 @@ const ProductListPage = () => {
                 setError(null);
                 try {
                     const response = await fetchWithInterceptor(
-                        `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product-list/${user?.userId}`,
+                        `https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/product-list/${user?.userId}`,
                         {
                             method: "GET",
                             headers: {
@@ -119,7 +119,7 @@ const ProductListPage = () => {
     const deleteProduct = async (product: Product) => {
         try {
             const response = await fetchWithInterceptor(
-                `https://nutrifitbackend-2v4o.onrender.com/api/nutrition/product/${user.userId}/${product._id}`,
+                `https://nutri-fit-back-576739684905.europe-west1.run.app/api/nutrition/product/${user.userId}/${product._id}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -153,7 +153,7 @@ const ProductListPage = () => {
         }
     };
 
-    const apiBaseUrl: string = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl: string = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
     // const apiBaseUrl: string = "http://localhost:8000/api";
 
     const handleAddToTodayMeal = async (product: any, quantity: string) => {

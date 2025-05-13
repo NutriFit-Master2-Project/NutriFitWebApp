@@ -73,14 +73,17 @@ export default function UserInfoForm() {
         e.preventDefault();
 
         try {
-            const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/user-info", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": token ?? "",
-                },
-                body: JSON.stringify({ ...userInfo, id: user?.userId }),
-            });
+            const response = await fetchWithInterceptor(
+                "https://nutri-fit-back-576739684905.europe-west1.run.app/api/user-info",
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "auth-token": token ?? "",
+                    },
+                    body: JSON.stringify({ ...userInfo, id: user?.userId }),
+                }
+            );
 
             if (!response.ok) {
                 throw new Error(`Erreur: ${response.status}`);

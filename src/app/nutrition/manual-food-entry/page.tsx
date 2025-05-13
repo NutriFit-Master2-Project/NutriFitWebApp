@@ -31,7 +31,7 @@ export default function ManualFoodEntryPage() {
         try {
             // Première requête pour obtenir les calories
             const caloriesResponse = await fetchWithInterceptor(
-                "https://nutrifitbackend-2v4o.onrender.com/api/calories-food",
+                "https://nutri-fit-back-576739684905.europe-west1.run.app/api/calories-food",
                 {
                     method: "POST",
                     headers: {
@@ -54,7 +54,7 @@ export default function ManualFoodEntryPage() {
             // Deuxième requête pour ajouter le repas
             const currentDate = getFormattedDate();
             const mealResponse = await fetchWithInterceptor(
-                `https://nutrifitbackend-2v4o.onrender.com/api/daily_entries/${user?.userId}/entries/${currentDate}/meals`,
+                `https://nutri-fit-back-576739684905.europe-west1.run.app/api/daily_entries/${user?.userId}/entries/${currentDate}/meals`,
                 {
                     method: "POST",
                     headers: {

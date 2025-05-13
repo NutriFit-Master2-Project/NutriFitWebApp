@@ -37,7 +37,7 @@ export default function StepsCard() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -79,7 +79,32 @@ export default function StepsCard() {
     }, [user, token]);
 
     if (loading) {
-        return <div className="text-gray-500">Chargement...</div>;
+        return (
+            <Card className="lg:max-w-md">
+                <CardHeader className="space-y-0 pb-2">
+                    <CardDescription>Aujourd'hui</CardDescription>
+                    <CardTitle className="text-4xl tabular-nums">
+                        0{" "}
+                        <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
+                            steps
+                        </span>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="h-[200px] animate-pulse bg-gray-200 rounded-md" />
+                </CardContent>
+                <CardFooter className="flex-col items-start gap-1">
+                    <CardDescription>
+                        Au cours des 7 derniers jours, vous avez marché{" "}
+                        <span className="font-medium text-foreground">0</span> pas.
+                    </CardDescription>
+                    <CardDescription>
+                        Vous devez encore marcher <span className="font-medium text-foreground">12000</span> pas pour
+                        atteindre votre objectif d'aujourd'hui.
+                    </CardDescription>
+                </CardFooter>
+            </Card>
+        );
     }
 
     if (error) {

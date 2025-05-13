@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useRouter } from "next/navigation";
 
-const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
 const ExercisesPage = ({ params }: any) => {
     const { trainingId } = params;

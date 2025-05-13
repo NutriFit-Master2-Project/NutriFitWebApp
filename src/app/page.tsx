@@ -6,15 +6,15 @@ export default function Home() {
     return (
         <>
             <section className="w-full min-h-[150vh] flex flex-col items-center justify-center p-6 space-y-12 mt-24">
-                <div className="w-full flex flex-col justify-center items-center text-center space-y-6">
-                    <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
+                <div className="w-full flex flex-col justify-center items-center text-center space-y-6 animate-fade-up">
+                    <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl animate-fade-up [--animation-delay:200ms]">
                         Bienvenue sur NutriFit
                     </h1>
-                    <p className="text-lg text-muted-foreground max-w-2xl">
+                    <p className="text-lg text-muted-foreground max-w-2xl animate-fade-up [--animation-delay:400ms]">
                         Votre compagnon intelligent pour atteindre vos objectifs de santé, avec des plans personnalisés,
                         des recettes sur-mesure et des programmes de fitness adaptés à vos besoins.
                     </p>
-                    <div className="space-x-4">
+                    <div className="space-x-4 animate-fade-up [--animation-delay:600ms]">
                         <Link href="/auth/sign-in">
                             <Button>Connexion</Button>
                         </Link>
@@ -25,7 +25,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className="w-full h-[90vh] flex justify-center">
+                <div className="w-full h-[90vh] flex justify-center animate-fade-up [--animation-delay:800ms]">
                     <Image
                         src="/laptop_mockup_dashboard.png"
                         alt="Hero Image"
@@ -36,8 +36,8 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="w-full h-[100vh]  flex flex-col-reverse lg:flex-row items-center justify-between p-6 lg:p-12">
-                <div className="w-full lg:w-1/2 flex flex-col justify-center items-start text-left space-y-6">
+            <section className="w-full h-[100vh] flex flex-col-reverse lg:flex-row items-center justify-between p-6 lg:p-12">
+                <div className="w-full lg:w-1/2 flex flex-col justify-center items-start text-left space-y-6 animate-fade-right">
                     <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
                         Rejoignez NutriFit
                     </h1>
@@ -61,7 +61,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                <div className="w-full lg:w-1/2 flex justify-center lg:justify-end animate-fade-left">
                     <Image
                         src="/phone_mockups.png"
                         alt="Hero Image"

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Dumbbell, Flame } from "lucide-react";
 
-const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
 export interface Exercise {
     name: string;

@@ -28,7 +28,7 @@ export async function updateDailyCalories(
     date: string,
     _caloriesUser: number
 ): Promise<number | void> {
-    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
     try {
         // Retrieve the daily entry

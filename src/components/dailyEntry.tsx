@@ -27,7 +27,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const apiBaseUrl: string = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl: string = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
     useEffect(() => {
         const fetchDailyEntry = async () => {
@@ -61,7 +61,88 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
     }, [userId, date, apiBaseUrl, token]);
 
     if (loading) {
-        return <div>Chargement...</div>;
+        return (
+            <Card
+                className="max-w-xs transition-transform duration-200 ease-in-out hover:scale-105 cursor-pointer"
+                x-chunk="charts-01-chunk-5"
+            >
+                <Link href={`/nutrition/daily-entry/${date}`}>
+                    <CardContent className="flex gap-4 p-4 cursor-pointer">
+                        <div className="grid items-center gap-2">
+                            <div className="grid flex-1 auto-rows-min gap-0.5">
+                                <div className="text-sm text-muted-foreground">Calories Consommées</div>
+                                <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
+                                    0<span className="text-sm font-normal text-muted-foreground">kcal</span>
+                                </div>
+                            </div>
+                            <div className="grid flex-1 auto-rows-min gap-0.5">
+                                <div className="text-sm text-muted-foreground">Calories Brûlées</div>
+                                <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
+                                    0<span className="text-sm font-normal text-muted-foreground">kcal</span>
+                                </div>
+                            </div>
+                            <div className="grid flex-1 auto-rows-min gap-0.5">
+                                <div className="text-sm text-muted-foreground">Pas</div>
+                                <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
+                                    0/3000
+                                    <span className="text-sm font-normal text-muted-foreground">pas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ChartContainer
+                            config={{
+                                calories: {
+                                    label: "Calories Consommées",
+                                    color: "hsl(var(--chart-1))",
+                                },
+                                caloriesBurn: {
+                                    label: "Calories Brûlées",
+                                    color: "hsl(var(--chart-2))",
+                                },
+                                steps: {
+                                    label: "Pas",
+                                    color: "hsl(var(--chart-3))",
+                                },
+                            }}
+                            className="mx-auto aspect-square w-full max-w-[80%]"
+                        >
+                            <RadialBarChart
+                                margin={{
+                                    left: -10,
+                                    right: -10,
+                                    top: -10,
+                                    bottom: -10,
+                                }}
+                                data={[
+                                    {
+                                        activity: "steps",
+                                        value: 0,
+                                        fill: "var(--color-steps)",
+                                    },
+                                    {
+                                        activity: "caloriesBurn",
+                                        value: 0,
+                                        fill: "var(--color-caloriesBurn)",
+                                    },
+                                    {
+                                        activity: "calories",
+                                        value: 0,
+                                        fill: "var(--color-calories)",
+                                    },
+                                ]}
+                                innerRadius="20%"
+                                barSize={24}
+                                startAngle={90}
+                                endAngle={450}
+                            >
+                                <PolarAngleAxis type="number" domain={[0, 100]} dataKey="value" tick={false} />
+                                <RadialBar dataKey="value" background cornerRadius={5} />
+                            </RadialBarChart>
+                        </ChartContainer>
+                    </CardContent>
+                </Link>
+            </Card>
+        );
     }
 
     if (error) {

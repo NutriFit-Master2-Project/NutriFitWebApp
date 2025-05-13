@@ -42,7 +42,7 @@ export default function DailyEntriesPage() {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
 
-    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");

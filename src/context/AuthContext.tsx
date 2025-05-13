@@ -47,11 +47,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const signUp = async (name: string, email: string, password: string) => {
         try {
-            const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-up", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
-            });
+            const response = await fetchWithInterceptor(
+                "https://nutri-fit-back-576739684905.europe-west1.run.app/api/auth/sign-up",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, password }),
+                }
+            );
 
             if (!response.ok) {
                 const errorResponse = await response.json();
@@ -73,7 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const fetchUserInfo = async (userId: string, token: string) => {
         try {
             const response = await fetchWithInterceptor(
-                `https://nutrifitbackend-2v4o.onrender.com/api/user-info/${userId}`,
+                `https://nutri-fit-back-576739684905.europe-west1.run.app/api/user-info/${userId}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json", "auth-token": token },
@@ -94,13 +97,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const signIn = async (email: string, password: string) => {
         try {
-            const response = await fetchWithInterceptor("https://nutrifitbackend-2v4o.onrender.com/api/auth/sign-in", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
+            const response = await fetchWithInterceptor(
+                "https://nutri-fit-back-576739684905.europe-west1.run.app/api/auth/sign-in",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                }
+            );
 
             if (!response.ok) {
                 const errorResponse = await response.json();

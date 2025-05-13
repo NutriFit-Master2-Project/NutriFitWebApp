@@ -43,7 +43,7 @@ export default function Dashboard() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const apiBaseUrl = "https://nutrifitbackend-2v4o.onrender.com/api";
+    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -168,7 +168,7 @@ export default function Dashboard() {
         <div className="chart-wrapper mx-auto flex max-w-6xl flex-col flex-wrap items-start justify-center gap-6 p-6 sm:flex-row sm:p-8">
             <div className="grid w-full gap-6 sm:grid-cols-2 lg:max-w-[22rem] lg:grid-cols-1 xl:max-w-[25rem]">
                 <Last7DaysStepsCard />
-                {caloriesData && <WeeklyCalories data={caloriesData} />}
+                {caloriesData ? <WeeklyCalories data={caloriesData} /> : <WeeklyCalories data={[]} />}
             </div>
             <div className="grid w-full flex-1 gap-6 lg:max-w-[20rem]">
                 {stepsComparisonData && <StepsComparison data={stepsComparisonData} />}
