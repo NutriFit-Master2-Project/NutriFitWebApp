@@ -6,6 +6,7 @@ import { BarChart, Bar, XAxis, ReferenceLine, Label } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/config/api";
 
 type DailyEntry = {
     calories: number;
@@ -37,7 +38,7 @@ export default function StepsCard() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
+    const apiBaseUrl = API_BASE_URL;
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");

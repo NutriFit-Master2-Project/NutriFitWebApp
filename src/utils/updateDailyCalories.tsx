@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/config/api";
 import { fetchWithInterceptor } from "./fetchInterceptor";
 
 type Meal = {
@@ -28,7 +29,7 @@ export async function updateDailyCalories(
     date: string,
     _caloriesUser: number
 ): Promise<number | void> {
-    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
+    const apiBaseUrl = API_BASE_URL;
 
     try {
         // Retrieve the daily entry

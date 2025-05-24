@@ -27,7 +27,7 @@ export default function TodayStat({ userId, date, token, dailyCalories }: DailyE
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const apiBaseUrl: string = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
+    const apiBaseUrl: string = API_BASE_URL;
 
     useEffect(() => {
         const fetchDailyEntry = async () => {

@@ -6,6 +6,7 @@ import { ChartContainer } from "@/components/ui/chart";
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 import Link from "next/link";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import { API_BASE_URL } from "@/config/api";
 
 type DailyEntry = {
     steps: number;
@@ -27,12 +28,10 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const apiBaseUrl: string = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
-
     useEffect(() => {
         const fetchDailyEntry = async () => {
             try {
-                const res = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${userId}/entries/${date}`, {
+                const res = await fetchWithInterceptor(`${API_BASE_URL}/daily_entries/${userId}/entries/${date}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -58,7 +57,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
         };
 
         fetchDailyEntry();
-    }, [userId, date, apiBaseUrl, token]);
+    }, [userId, date, token]);
 
     if (loading) {
         return (

@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Dumbbell, Flame } from "lucide-react";
+import { API_BASE_URL } from "@/config/api";
 
-const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
+const apiBaseUrl = API_BASE_URL;
 
 export interface Exercise {
     name: string;
