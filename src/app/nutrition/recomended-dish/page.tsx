@@ -121,14 +121,16 @@ const RecommendDishPage = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex justify-center items-center mb-6">
-                <h1 className="text-3xl font-bold pr-10">Plat Recommandé</h1>
+            <div className="flex flex-col justify-center items-center mb-6 mt-[3vh]">
+                <h1 className="text-3xl font-bold mb-4">
+                    Découvrez un plat recommandé à partir des aliments de votre frigo
+                </h1>
                 <Button
                     className="bg-primary hover:bg-primary-dark text-white font-semibold py-2 rounded-lg transition-all duration-300"
                     onClick={recommendDish}
                     disabled={initialLoading || loading}
                 >
-                    🍽️ Obtenir une recommandation de plat
+                    Obtenir une recommandation de plat
                 </Button>
             </div>
 
@@ -149,7 +151,7 @@ const RecommendDishPage = () => {
                                 <div className="mt-4 bg-amber-50 p-4 rounded-lg border border-amber-200">
                                     <h3 className="font-bold text-2xl pb-2">🛍️ À acheter</h3>
                                     <p className="text-amber-700 mb-2">
-                                        Ces ingrédients ne sont pas dans votre frigot :
+                                        Ces ingrédients ne sont pas dans votre frigo :
                                     </p>
                                     <ul className="list-disc pl-5 text-gray-700 text-lg">
                                         {recommendedDish.ExtraFood.map((item, index) => (
@@ -163,7 +165,7 @@ const RecommendDishPage = () => {
                                 <div className="mt-4 bg-green-50 p-4 rounded-lg border border-green-200">
                                     <h3 className="font-bold text-2xl pb-2">🎉 Tout est prêt</h3>
                                     <p className="text-green-700 mb-2">
-                                        Vous avez tous les ingrédients nécessaires dans votre frigot.
+                                        Vous avez tous les ingrédients nécessaires dans votre frigo.
                                     </p>
                                 </div>
                             )}

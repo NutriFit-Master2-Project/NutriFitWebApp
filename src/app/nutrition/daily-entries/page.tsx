@@ -9,6 +9,7 @@ import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import DailyEntryCard from "@/components/dailyEntry";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/config/api";
 
 type Meal = {
     id: string;
@@ -42,8 +43,6 @@ export default function DailyEntriesPage() {
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
 
-    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
-
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         const storedToken = localStorage.getItem("token");
@@ -60,7 +59,7 @@ export default function DailyEntriesPage() {
         if (user && token) {
             const fetchDailyEntries = async () => {
                 try {
-                    const res = await fetchWithInterceptor(`${apiBaseUrl}/daily_entries/${user?.userId}/entries`, {
+                    const res = await fetchWithInterceptor(`${API_BASE_URL}/daily_entries/${user?.userId}/entries`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

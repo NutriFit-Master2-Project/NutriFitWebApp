@@ -22,7 +22,7 @@ interface UserInfo {
 }
 
 export default function UserInfoForm() {
-    const { user, token } = useAuth();
+    const { user, token, resetUserInfo } = useAuth();
     const router = useRouter();
 
     const [userInfo, setUserInfo] = useState<Partial<UserInfo>>({
@@ -89,9 +89,9 @@ export default function UserInfoForm() {
                 throw new Error(`Erreur: ${response.status}`);
             }
 
-            await response.json();
+            await resetUserInfo(user?.userId ?? "", token ?? "");
 
-            router.push("/nutrition/daily-entries");
+            router.push("/information");
         } catch (error) {
             console.error("Erreur lors de l'envoi des données:", error);
         }

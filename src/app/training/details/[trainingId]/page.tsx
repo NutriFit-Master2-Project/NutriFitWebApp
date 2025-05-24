@@ -9,8 +9,9 @@ import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { useToast } from "@/hooks/use-toast";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/config/api";
 
-const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
+const apiBaseUrl = API_BASE_URL;
 
 const ExercisesPage = ({ params }: any) => {
     const { trainingId } = params;
@@ -58,7 +59,6 @@ const ExercisesPage = ({ params }: any) => {
                         setTrainingTotalCalories(training.totalCalories);
                         setExercises(training.exercises);
                         setTrainingName(training.name);
-                        console.log("🚀 ~ fetchExercises ~ training.exercises:", training.exercises);
                     } else {
                         throw new Error("Entraînement non trouvé");
                     }

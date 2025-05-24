@@ -13,6 +13,7 @@ import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useToast } from "@/hooks/use-toast";
 import CalendarDailyEntry from "@/components/calendar-daily-entry";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/config/api";
 
 interface DailyEntry {
     date: string;
@@ -32,7 +33,6 @@ interface Meal {
 export default function MealsPage({ params }: any) {
     const { date } = params; // Récupérer la date depuis les paramètres de l'URL
 
-    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
     const { toast } = useToast();
@@ -59,7 +59,7 @@ export default function MealsPage({ params }: any) {
             const fetchDailyEntry = async () => {
                 try {
                     const entryRes = await fetchWithInterceptor(
-                        `${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}`,
+                        `${API_BASE_URL}/daily_entries/${user?.userId}/entries/${date}`,
                         {
                             method: "GET",
                             headers: {
@@ -72,7 +72,6 @@ export default function MealsPage({ params }: any) {
                         throw new Error("Impossible de récupérer l'entrée quotidienne.");
                     }
                     const entryData: DailyEntry = await entryRes.json();
-                    console.log("🚀 ~ fetchDailyEntry ~ entryData:", entryData);
                     setDailyEntry(entryData);
                     setMeals(entryData.meals);
                 } catch (err: any) {
@@ -87,7 +86,7 @@ export default function MealsPage({ params }: any) {
     const handleDelete = async (mealId: string) => {
         try {
             const res = await fetchWithInterceptor(
-                `${apiBaseUrl}/daily_entries/${user?.userId}/entries/${date}/meals/${mealId}`,
+                `${API_BASE_URL}/daily_entries/${user?.userId}/entries/${date}/meals/${mealId}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -157,6 +156,7 @@ export default function MealsPage({ params }: any) {
                                 Calories consommées
                             </Badge>
                             <p className="text-lg font-medium">{dailyEntry.calories} kcal</p>
+                            <p className="text-sm text-gray-500">Objectif du jour: {user.calories} kcal</p>
                         </div>
                         <div>
                             <Badge variant="outline" className="mb-2">

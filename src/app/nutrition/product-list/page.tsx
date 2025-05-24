@@ -20,6 +20,8 @@ import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 import { updateDailyCalories } from "@/utils/updateDailyCalories";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/config/api";
+import Link from "next/link";
 
 interface Product {
     _id: string;
@@ -83,13 +85,12 @@ const ProductListPage = () => {
                         }
                     );
                     if (!response.ok) {
-                        throw new Error("Erreur lors de la récupération des produits");
+                        throw new Error("Une erreur est survenue lors de la récupération des produits.");
                     }
                     const data: Product[] = await response.json();
                     setProducts(data);
                 } catch (error) {
-                    setError("Une erreur est survenue lors de la récupération des produits.");
-                    console.error(error);
+                    setError("Aucun aliment n'est disponible dans le frigo.");
                 } finally {
                     setLoading(false);
                 }
@@ -153,7 +154,7 @@ const ProductListPage = () => {
         }
     };
 
-    const apiBaseUrl: string = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
+    const apiBaseUrl: string = API_BASE_URL;
     // const apiBaseUrl: string = "http://localhost:8000/api";
 
     const handleAddToTodayMeal = async (product: any, quantity: string) => {
@@ -208,7 +209,7 @@ const ProductListPage = () => {
 
     return (
         <div className="container mx-auto py-8">
-            <h1 className="text-3xl font-bold mb-6">Liste des Produits</h1>
+            <h1 className="text-4xl font-bold mb-6">Dans mon frigo</h1>
 
             {loading && (
                 <div className="flex justify-center items-center space-x-2">
@@ -218,18 +219,11 @@ const ProductListPage = () => {
             )}
 
             {error && (
-                <div className="flex justify-center items-center space-x-2">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 text-red-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                    <p className="text-center text-lg text-red-500 font-semibold">{error}</p>
+                <div className="flex flex-col justify-center items-center space-y-2 mt-[35vh]">
+                    <p className="text-center text-lg font-semibold">{error}</p>
+                    <Link href="/nutrition/food-scanner">
+                        <Button>Ajouter un aliment</Button>
+                    </Link>
                 </div>
             )}
 

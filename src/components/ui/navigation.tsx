@@ -61,10 +61,10 @@ export function Navigation() {
                                         className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                                     >
                                         <Refrigerator className="h-5 w-5" />
-                                        <span className="sr-only">Dans mon frigot</span>
+                                        <span className="sr-only">Dans mon frigo</span>
                                     </Link>
                                 </TooltipTrigger>
-                                <TooltipContent side="right">Dans mon frigot</TooltipContent>
+                                <TooltipContent side="right">Dans mon frigo</TooltipContent>
                             </Tooltip>
 
                             <Tooltip>
@@ -74,10 +74,10 @@ export function Navigation() {
                                         className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                                     >
                                         <Soup className="h-5 w-5" />
-                                        <span className="sr-only">Repas</span>
+                                        <span className="sr-only">Journal Alimentaire</span>
                                     </Link>
                                 </TooltipTrigger>
-                                <TooltipContent side="right">Repas</TooltipContent>
+                                <TooltipContent side="right">Journal Alimentaire</TooltipContent>
                             </Tooltip>
 
                             <Tooltip>

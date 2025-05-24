@@ -8,6 +8,7 @@ import TodayStat from "@/components/todayStat";
 import WalkingDistance from "@/components/walking-distance";
 import WeeklyCalories from "@/components/weekly-calories";
 import WeeklyMeals from "@/components/weekly-meals";
+import { API_BASE_URL } from "@/config/api";
 import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -43,8 +44,6 @@ export default function Dashboard() {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const apiBaseUrl = "https://nutri-fit-back-576739684905.europe-west1.run.app/api";
-
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         const storedToken = localStorage.getItem("token");
@@ -61,7 +60,7 @@ export default function Dashboard() {
         if (user && token) {
             const fetchDailyEntries = async () => {
                 try {
-                    const res = await fetch(`${apiBaseUrl}/daily_entries/${user?.userId}/entries`, {
+                    const res = await fetch(`${API_BASE_URL}/daily_entries/${user?.userId}/entries`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
