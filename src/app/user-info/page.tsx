@@ -91,7 +91,7 @@ export default function UserInfoForm() {
 
             await resetUserInfo(user?.userId ?? "", token ?? "");
 
-            router.push("/nutrition/daily-entries");
+            router.push("/information");
         } catch (error) {
             console.error("Erreur lors de l'envoi des données:", error);
         }
