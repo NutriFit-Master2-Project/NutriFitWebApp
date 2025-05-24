@@ -45,10 +45,6 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
 
                 const data: DailyEntry = await res.json();
                 setDailyEntry(data);
-                console.log(
-                    "🚀 ~ fetchDailyEntry ~ (dailyEntry!.steps * 100) / 3000:",
-                    (dailyEntry?.steps ?? 1 * 100) / 3000
-                );
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -71,7 +67,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                             <div className="grid flex-1 auto-rows-min gap-0.5">
                                 <div className="text-sm text-muted-foreground">Calories Consommées</div>
                                 <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
-                                    0<span className="text-sm font-normal text-muted-foreground">kcal</span>
+                                    0<span className="text-sm font-normal text-muted-foreground">kcal </span>
                                 </div>
                             </div>
                             <div className="grid flex-1 auto-rows-min gap-0.5">
@@ -163,7 +159,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                         <div className="grid flex-1 auto-rows-min gap-0.5">
                             <div className="text-sm text-muted-foreground">Calories Consommées</div>
                             <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
-                                {Number(dailyEntry.calories).toFixed(0)}
+                                {Number(dailyEntry.calories).toFixed(0)}/{Number(dailyCalories ?? 2000).toFixed(0)}
                                 <span className="text-sm font-normal text-muted-foreground">kcal</span>
                             </div>
                         </div>
@@ -177,7 +173,7 @@ export default function DailyEntryCard({ userId, date, token, dailyCalories }: D
                         <div className="grid flex-1 auto-rows-min gap-0.5">
                             <div className="text-sm text-muted-foreground">Pas</div>
                             <div className="flex items-baseline gap-1 text-xl font-bold tabular-nums leading-none">
-                                {dailyEntry.steps}/3000
+                                {dailyEntry.steps}
                                 <span className="text-sm font-normal text-muted-foreground">pas</span>
                             </div>
                         </div>

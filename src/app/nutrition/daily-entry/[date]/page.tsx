@@ -72,7 +72,6 @@ export default function MealsPage({ params }: any) {
                         throw new Error("Impossible de récupérer l'entrée quotidienne.");
                     }
                     const entryData: DailyEntry = await entryRes.json();
-                    console.log("🚀 ~ fetchDailyEntry ~ entryData:", entryData);
                     setDailyEntry(entryData);
                     setMeals(entryData.meals);
                 } catch (err: any) {
@@ -157,6 +156,7 @@ export default function MealsPage({ params }: any) {
                                 Calories consommées
                             </Badge>
                             <p className="text-lg font-medium">{dailyEntry.calories} kcal</p>
+                            <p className="text-sm text-gray-500">Objectif du jour: {user.calories} kcal</p>
                         </div>
                         <div>
                             <Badge variant="outline" className="mb-2">

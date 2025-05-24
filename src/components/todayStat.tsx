@@ -7,6 +7,7 @@ import { Bar, BarChart, LabelList, PolarAngleAxis, RadialBar, RadialBarChart, XA
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
+import { API_BASE_URL } from "@/config/api";
 
 type DailyEntry = {
     steps: number;

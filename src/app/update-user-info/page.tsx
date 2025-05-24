@@ -22,7 +22,7 @@ interface UserInfo {
 }
 
 export default function EditProfilePage() {
-    const { user, token } = useAuth();
+    const { user, token, resetUserInfo } = useAuth();
     const router = useRouter();
 
     const [userInfo, setUserInfo] = useState<Partial<UserInfo>>({
@@ -103,6 +103,8 @@ export default function EditProfilePage() {
             if (!response.ok) {
                 throw new Error(`Erreur: ${response.status}`);
             }
+
+            await resetUserInfo(user?.userId ?? "", token ?? "");
 
             router.push("/dashboard");
         } catch (error) {

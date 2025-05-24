@@ -4,7 +4,6 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { jwtDecode } from "jwt-decode";
-import { FastForward } from "lucide-react";
 import { fetchWithInterceptor } from "@/utils/fetchInterceptor";
 
 interface User {
@@ -18,6 +17,7 @@ interface AuthContextType {
     signUp: (name: string, email: string, password: string) => Promise<void>;
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => void;
+    resetUserInfo: (userId: string, token: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -95,6 +95,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
+    const resetUserInfo = async (userId: string, token: string) => {
+        try {
+            const response = await fetchWithInterceptor(
+                `https://nutri-fit-back-576739684905.europe-west1.run.app/api/user-info/${userId}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", "auth-token": token },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`Erreur lors de la récupération des informations utilisateur : ${response.status}`);
+            }
+
+            const userInfo = await response.json();
+
+            if (userInfo) {
+                setUser({ ...userInfo, userId });
+                localStorage.setItem("user", JSON.stringify({ ...userInfo, userId }));
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des informations utilisateur :", error);
+        }
+    };
+
     const signIn = async (email: string, password: string) => {
         try {
             const response = await fetchWithInterceptor(
@@ -127,7 +152,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 localStorage.setItem("user", JSON.stringify({ ...userInfo, userId }));
                 localStorage.setItem("token", data.token);
 
-                // If it's user first connexion then go to page to set user details data
+                // If it's user's first connexion then go to page to set user details data
                 userInfo.activites ? router.push("/dashboard") : router.push("/user-info");
             } else {
                 throw new Error("Impossible de récupérer les informations utilisateur");
@@ -150,7 +175,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         router.push("/auth/sign-in");
     };
 
-    return <AuthContext.Provider value={{ user, token, signUp, signIn, signOut }}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ user, token, signUp, signIn, signOut, resetUserInfo }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 // Hook to use auth context

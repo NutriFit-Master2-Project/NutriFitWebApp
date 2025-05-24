@@ -99,10 +99,6 @@ export default function StepsCard() {
                         Au cours des 7 derniers jours, vous avez marché{" "}
                         <span className="font-medium text-foreground">0</span> pas.
                     </CardDescription>
-                    <CardDescription>
-                        Vous devez encore marcher <span className="font-medium text-foreground">12000</span> pas pour
-                        atteindre votre objectif d'aujourd'hui.
-                    </CardDescription>
                 </CardFooter>
             </Card>
         );
@@ -218,13 +214,6 @@ export default function StepsCard() {
                 <CardDescription>
                     Au cours des 7 derniers jours, vous avez marché{" "}
                     <span className="font-medium text-foreground">{totalSteps}</span> pas.
-                </CardDescription>
-                <CardDescription>
-                    Vous devez encore marcher{" "}
-                    <span className="font-medium text-foreground">
-                        {stepsGoal - (stepsData[stepsData.length - 1]?.steps ?? 0)}
-                    </span>{" "}
-                    pas pour atteindre votre objectif d'aujourd'hui.
                 </CardDescription>
             </CardFooter>
         </Card>

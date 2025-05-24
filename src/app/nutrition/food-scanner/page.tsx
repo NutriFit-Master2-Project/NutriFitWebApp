@@ -107,7 +107,7 @@ const FoodScanner: React.FC = () => {
     return (
         <div className="container mx-auto p-6 bg-white">
             <Card className="mb-6 bg-white">
-                <CardHeader className="sticky top-0 z-10 bg-white">
+                <CardHeader className="sticky top-0 z-2 bg-white">
                     <CardTitle className="mb-4 text-gray-900">Scanner un Aliment</CardTitle>
 
                     {/* Champ de saisie pour l'entrée manuelle */}
